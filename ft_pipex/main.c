@@ -6,7 +6,7 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/22 17:25:52 by rvrignon          #+#    #+#             */
-/*   Updated: 2022/06/27 23:42:01 by rvrignon         ###   ########.fr       */
+/*   Updated: 2022/06/28 00:40:38 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,13 +59,6 @@ static char *get_cmd_path(char *cmd, char **envp)
 
 int main(int ac, char **av, char **envp)
 {
-
-    char *cmd1;
-    char *options1[3] = {"wc", "-l", NULL};
-    char *cmd_path1;
-    char *cmd2;
-    char *options2[3] = {"ls", "-la", NULL};
-    char *cmd_path2;
     int pfd[2];
 
     (void)ac;
@@ -75,7 +68,38 @@ int main(int ac, char **av, char **envp)
         printf("pipe failed\n");
         return 1;
     }
-
+    //-----------------------------------------------------------------------------------
+    //-----------------------------------------------------------------------------------
+    int pid2;
+    if ((pid2 = fork()) < 0)
+    {
+        printf("fork failed\n");
+        return 2;
+    }
+    if (pid2 == 0)
+    {
+        char *cmd3;
+        char *options3[3] = {"awk", "NR>4", NULL};
+        char *cmd_path3;
+        // ------------- WC -----------------------------//
+        close(pfd[1]);
+        dup2(pfd[0], 0);
+        close(pfd[0]);
+        cmd3 = options3[0];
+        cmd_path3 = get_cmd_path(cmd3, envp);
+        if (!cmd_path3)
+        {
+            ft_printf("Error!\n");
+            return (-1);
+        }
+        execve(cmd_path3, options3, envp);
+        free(cmd_path3);
+        printf("wc failed");
+        return 3;
+        // ------------- WC -----------------------------//
+    }
+    //-----------------------------------------------------------------------------------
+    //-----------------------------------------------------------------------------------
     int pid;
     if ((pid = fork()) < 0)
     {
@@ -84,10 +108,13 @@ int main(int ac, char **av, char **envp)
     }
     if (pid == 0)
     {
-        close(pfd[1]);   /* close the unused write side */
-        dup2(pfd[0], 0); /* connect the read side with stdin */
-        close(pfd[0]);   /* close the read side */
-        /* execute the process (wc command) */
+        char *cmd1;
+        char *options1[3] = {"wc", "-l", NULL};
+        char *cmd_path1;
+        // ------------- AWK -----------------------------//
+        close(pfd[1]);
+        dup2(pfd[0], 0);
+        close(pfd[0]);
         cmd1 = options1[0];
         cmd_path1 = get_cmd_path(cmd1, envp);
         if (!cmd_path1)
@@ -97,16 +124,20 @@ int main(int ac, char **av, char **envp)
         }
         execve(cmd_path1, options1, envp);
         free(cmd_path1);
-        printf("wc failed"); /* if execlp returns, it's an error */
-        return 3;
+        printf("awk failed");
+        return 4;
+        // ------------- AWK -----------------------------//
     }
     else
     {
-        /* parent */
-        close(pfd[0]);   /* close the unused read side */
-        dup2(pfd[1], 1); /* connect the write side with stdout */
-        close(pfd[1]);   /* close the write side */
-                         /* execute the process (ls command) */
+        char *cmd2;
+        char *options2[3] = {"ls", "-la", NULL};
+        char *cmd_path2;
+        // ------------- LS -----------------------------//
+        close(pfd[0]);
+        dup2(pfd[1], 1);
+        close(pfd[1]);
+
         cmd2 = options2[0];
         cmd_path2 = get_cmd_path(cmd2, envp);
         if (!cmd_path2)
@@ -116,8 +147,9 @@ int main(int ac, char **av, char **envp)
         }
         execve(cmd_path2, options2, envp);
         free(cmd_path2);
-        printf("ls failed"); /* if execlp returns, it's an error */
+        printf("ls failed");
         return 4;
+        // ------------- LS -----------------------------//
     }
     return 0;
 }

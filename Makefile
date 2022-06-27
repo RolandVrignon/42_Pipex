@@ -6,11 +6,12 @@
 #    By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/22 17:24:14 by rvrignon          #+#    #+#              #
-#    Updated: 2022/06/22 17:25:30 by rvrignon         ###   ########.fr        #
+#    Updated: 2022/06/23 16:32:20 by rvrignon         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 SRC =  	ft_pipex/main.c \
+		ft_pipex/parse/utils.c \
 
 OBJ		=	$(SRC:.c=.o)
 

@@ -6,7 +6,7 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/22 17:25:52 by rvrignon          #+#    #+#             */
-/*   Updated: 2022/06/29 19:07:31 by rvrignon         ###   ########.fr       */
+/*   Updated: 2022/06/29 19:22:05 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,19 +92,17 @@ char **get_paths(t_pipex *pipex, char **cmd, char **envp)
     if (!tab)
         return (NULL);
     i = 0;
-    while (i < pipex->cmd_nbr + 1)
+    while (i < pipex->cmd_nbr)
     {
-        ft_printf("%s\n", cmd[i]);
         tab[i] = get_cmd_path(cmd[i], envpath);
-        ft_printf("%s\n", tab[i]);
         if (!tab[i])
             return (NULL);
         i++;
     }
-    return (NULL);
+    return (tab);
 }
 
-char **get_info(t_pipex *pipex, char **av, int r)
+char **get_cmd(int cmd_nbr, char **av)
 {
     int i;
     int j;
@@ -113,16 +111,41 @@ char **get_info(t_pipex *pipex, char **av, int r)
 
     i = 0;
     j = 2;
-    tab = malloc(sizeof(char) * (pipex->cmd_nbr + 2));
+    tab = malloc(sizeof(char) * (cmd_nbr + 2));
     if (!tab)
         return (NULL);
-    while (i < pipex->cmd_nbr)
+    while (i < cmd_nbr)
     {
         split = ft_split(av[j], ' ');
         if (!split)
             return (NULL);
-        tab[i] = split[r];
-        ft_printf("%s\n", tab[i]);
+        tab[i] = split[0];
+        free(split);
+        j++;
+        i++;
+    }
+    tab[i] = NULL;
+    return (tab);
+}
+
+char **get_opt(int cmd_nbr, char **av)
+{
+    int i;
+    int j;
+    char **tab;
+    char **split;
+
+    i = 0;
+    j = 2;
+    tab = malloc(sizeof(char) * (cmd_nbr + 2));
+    if (!tab)
+        return (NULL);
+    while (i < cmd_nbr)
+    {
+        split = ft_split(av[j], ' ');
+        if (!split)
+            return (NULL);
+        tab[i] = split[1];
         free(split);
         j++;
         i++;
@@ -143,10 +166,10 @@ t_pipex *set_pipex(int ac, char **av, char **envp)
     pipex->infile = av[1];
     pipex->outfile = av[ac - 1];
     pipex->pipe_nbr = ac - 4;
-    pipex->cmd = get_info(pipex, av, 0);
-    pipex->option = get_info(pipex, av, 1);
-    // pipex->cmd_path = get_paths(pipex, pipex->cmd, envp);
-    if (!pipex->cmd || !pipex->option)
+    pipex->opt = get_opt(ac - 3, av);
+    pipex->cmd = get_cmd(ac - 3, av);
+    pipex->cpath = get_paths(pipex, pipex->cmd, envp);
+    if (!pipex->cmd || !pipex->opt)
         return (NULL);
     return (pipex);
 }
@@ -168,7 +191,7 @@ int main(int ac, char **av, char **envp)
     int i = 0;
     while (i < pipex->cmd_nbr)
     {
-        ft_printf("command : %s || option : %s || path : \n", pipex->cmd[i], pipex->option[i]);
+        ft_printf("i = %d\t||\tcommand : %s\t||\toption : %s\t||\tpath : %s\n",i, pipex->cmd[i], pipex->opt[i], pipex->cpath[i]);
         i++;
     }
     // if (create_pipes(pipex))

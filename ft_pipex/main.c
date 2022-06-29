@@ -6,7 +6,7 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/22 17:25:52 by rvrignon          #+#    #+#             */
-/*   Updated: 2022/06/28 00:40:38 by rvrignon         ###   ########.fr       */
+/*   Updated: 2022/06/29 19:07:31 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,38 @@
 #include <fcntl.h>
 #include <unistd.h>
 
-static char *get_cmd_path(char *cmd, char **envp)
+char *get_cmd_path(char *cmd, char *envp_PATH)
+{
+    char **paths;
+    char *tmp;
+    char *cmd_path;
+    int i;
+
+    paths = ft_split(envp_PATH, ':');
+    if (!paths)
+        return (0);
+    i = 0;
+    while (paths[i])
+    {
+        tmp = paths[i];
+        paths[i] = ft_strjoin(paths[i], "/");
+        free(tmp);
+        i++;
+    }
+    i = 0;
+    while (paths[i++])
+    {
+        cmd_path = ft_strjoin(paths[i], cmd);
+        if (access(cmd_path, F_OK | X_OK) == 0)
+            return (cmd_path);
+        free(cmd_path);
+    }
+    return (NULL);
+}
+
+char *get_envp(char **envp)
 {
     char *envp_PATH;
-    char **paths;
-    char *cmd_path;
-    char *tmp;
     int i;
 
     i = 0;
@@ -35,121 +61,118 @@ static char *get_cmd_path(char *cmd, char **envp)
             break;
         }
     }
-    paths = ft_split(envp_PATH, ':');
-    if (!paths)
+    return (envp_PATH);
+}
+
+int create_pipes(t_pipex *pipex)
+{
+    int i;
+
+    i = 0;
+    pipex->pfd = malloc(sizeof(int) * pipex->cmd_nbr * 2);
+    if (!pipex->pfd)
         return (0);
-    free(envp_PATH);
-    i = 0;
-    while (paths[i++])
+    while (i < pipex->pipe_nbr)
     {
-        tmp = paths[i];
-        paths[i] = ft_strjoin(paths[i], "/");
-        free(tmp);
+        if (pipe(pipex->pfd + (2 * i)) < 0)
+            return (0);
+        i++;
     }
+    return (1);
+}
+
+char **get_paths(t_pipex *pipex, char **cmd, char **envp)
+{
+    char **tab;
+    int i;
+    char *envpath;
+
+    envpath = get_envp(envp);
+    tab = malloc(sizeof(char *) * (pipex->cmd_nbr + 1));
+    if (!tab)
+        return (NULL);
     i = 0;
-    while (paths[i++])
+    while (i < pipex->cmd_nbr + 1)
     {
-        cmd_path = ft_strjoin(paths[i], cmd);
-        if (access(cmd_path, F_OK | X_OK) == 0)
-            return (cmd_path);
-        free(cmd_path);
+        ft_printf("%s\n", cmd[i]);
+        tab[i] = get_cmd_path(cmd[i], envpath);
+        ft_printf("%s\n", tab[i]);
+        if (!tab[i])
+            return (NULL);
+        i++;
     }
     return (NULL);
 }
 
+char **get_info(t_pipex *pipex, char **av, int r)
+{
+    int i;
+    int j;
+    char **tab;
+    char **split;
+
+    i = 0;
+    j = 2;
+    tab = malloc(sizeof(char) * (pipex->cmd_nbr + 2));
+    if (!tab)
+        return (NULL);
+    while (i < pipex->cmd_nbr)
+    {
+        split = ft_split(av[j], ' ');
+        if (!split)
+            return (NULL);
+        tab[i] = split[r];
+        ft_printf("%s\n", tab[i]);
+        free(split);
+        j++;
+        i++;
+    }
+    tab[i] = NULL;
+    return (tab);
+}
+
+t_pipex *set_pipex(int ac, char **av, char **envp)
+{
+    t_pipex *pipex;
+
+    (void)envp;
+    pipex = malloc(sizeof(t_pipex *) * 1);
+    if (!pipex)
+        return (NULL);
+    pipex->cmd_nbr = ac - 3;
+    pipex->infile = av[1];
+    pipex->outfile = av[ac - 1];
+    pipex->pipe_nbr = ac - 4;
+    pipex->cmd = get_info(pipex, av, 0);
+    pipex->option = get_info(pipex, av, 1);
+    // pipex->cmd_path = get_paths(pipex, pipex->cmd, envp);
+    if (!pipex->cmd || !pipex->option)
+        return (NULL);
+    return (pipex);
+}
+
+int free_stuff(t_pipex *pipex)
+{
+    free(pipex->pfd);
+    free(pipex);
+    return (1);
+}
+
 int main(int ac, char **av, char **envp)
 {
-    int pfd[2];
+    t_pipex *pipex;
 
-    (void)ac;
-    (void)av;
-    if (pipe(pfd) == -1)
-    {
-        printf("pipe failed\n");
+    pipex = set_pipex(ac, av, envp);
+    if (!pipex)
         return 1;
-    }
-    //-----------------------------------------------------------------------------------
-    //-----------------------------------------------------------------------------------
-    int pid2;
-    if ((pid2 = fork()) < 0)
+    int i = 0;
+    while (i < pipex->cmd_nbr)
     {
-        printf("fork failed\n");
-        return 2;
+        ft_printf("command : %s || option : %s || path : \n", pipex->cmd[i], pipex->option[i]);
+        i++;
     }
-    if (pid2 == 0)
-    {
-        char *cmd3;
-        char *options3[3] = {"awk", "NR>4", NULL};
-        char *cmd_path3;
-        // ------------- WC -----------------------------//
-        close(pfd[1]);
-        dup2(pfd[0], 0);
-        close(pfd[0]);
-        cmd3 = options3[0];
-        cmd_path3 = get_cmd_path(cmd3, envp);
-        if (!cmd_path3)
-        {
-            ft_printf("Error!\n");
-            return (-1);
-        }
-        execve(cmd_path3, options3, envp);
-        free(cmd_path3);
-        printf("wc failed");
-        return 3;
-        // ------------- WC -----------------------------//
-    }
-    //-----------------------------------------------------------------------------------
-    //-----------------------------------------------------------------------------------
-    int pid;
-    if ((pid = fork()) < 0)
-    {
-        printf("fork failed\n");
-        return 2;
-    }
-    if (pid == 0)
-    {
-        char *cmd1;
-        char *options1[3] = {"wc", "-l", NULL};
-        char *cmd_path1;
-        // ------------- AWK -----------------------------//
-        close(pfd[1]);
-        dup2(pfd[0], 0);
-        close(pfd[0]);
-        cmd1 = options1[0];
-        cmd_path1 = get_cmd_path(cmd1, envp);
-        if (!cmd_path1)
-        {
-            ft_printf("Error!\n");
-            return (-1);
-        }
-        execve(cmd_path1, options1, envp);
-        free(cmd_path1);
-        printf("awk failed");
-        return 4;
-        // ------------- AWK -----------------------------//
-    }
-    else
-    {
-        char *cmd2;
-        char *options2[3] = {"ls", "-la", NULL};
-        char *cmd_path2;
-        // ------------- LS -----------------------------//
-        close(pfd[0]);
-        dup2(pfd[1], 1);
-        close(pfd[1]);
-
-        cmd2 = options2[0];
-        cmd_path2 = get_cmd_path(cmd2, envp);
-        if (!cmd_path2)
-        {
-            ft_printf("Error!\n");
-            return (-1);
-        }
-        execve(cmd_path2, options2, envp);
-        free(cmd_path2);
-        printf("ls failed");
-        return 4;
-        // ------------- LS -----------------------------//
-    }
+    // if (create_pipes(pipex))
+    //     return 1;
+    // free_stuff(pipex);
     return 0;
 }

@@ -6,7 +6,7 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/22 17:25:52 by rvrignon          #+#    #+#             */
-/*   Updated: 2022/06/30 16:38:59 by rvrignon         ###   ########.fr       */
+/*   Updated: 2022/06/30 17:19:21 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,11 @@ int main(int ac, char **av, char **envp)
     print_test(pipex);
     if (!create_pipes(pipex))
         return 1;
-    while (i++ < pipex.cmd_nbr)
+    while (i < pipex.cmd_nbr)
+    {
         create_childs(pipex, i, envp);
+        i++;
+    }
     close_pipes(pipex);
     close(pipex.infile_fd);
     close(pipex.outfile_fd);

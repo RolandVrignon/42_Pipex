@@ -6,7 +6,7 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/22 17:26:58 by rvrignon          #+#    #+#             */
-/*   Updated: 2022/06/30 15:52:13 by rvrignon         ###   ########.fr       */
+/*   Updated: 2022/06/30 16:30:18 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,10 @@
 #include <sys/wait.h>
 
 typedef struct s_pipex {
+	int		pid;
 	// files
-	char	*infile;
-	char	*outfile;
+	int		infile_fd;
+	char	outfile_fd;
 	// infos
 	int		cmd_nbr;
 	char	*env_path;
@@ -56,6 +57,8 @@ void	free_double(char **tab);
 int		create_pipes(t_pipex pipex);
 
 void	close_pipes(t_pipex pipex);
+
+void	create_childs(t_pipex pipex, int i, char **envp);
 
 
 #endif

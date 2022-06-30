@@ -6,7 +6,7 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/22 17:25:52 by rvrignon          #+#    #+#             */
-/*   Updated: 2022/06/30 14:52:56 by rvrignon         ###   ########.fr       */
+/*   Updated: 2022/06/30 15:41:16 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,14 +34,17 @@ char *get_cmd_path(char *cmd, char *envp_PATH)
         i++;
     }
     i = 0;
-    while (paths[i++])
+    while (paths[i])
     {
         cmd_path = ft_strjoin(paths[i], cmd);
         if (access(cmd_path, F_OK | X_OK) == 0)
+        {
+            free_double(paths);
             return (cmd_path);
+        }
         free(cmd_path);
+        i++;
     }
-    free_double(paths);
     return (NULL);
 }
 
@@ -49,22 +52,19 @@ char **get_paths(t_pipex pipex)
 {
     char **tab;
     int i;
-    char *envpath;
-    char **cmd;
-
-    envpath = pipex.env_path;
-    cmd = pipex.cmd;
+    
     tab = malloc(sizeof(char *) * (pipex.cmd_nbr + 1));
     if (!tab)
         return (NULL);
     i = 0;
     while (i < pipex.cmd_nbr)
     {
-        tab[i] = get_cmd_path(cmd[i], envpath);
+        tab[i] = get_cmd_path(pipex.cmd[i], pipex.env_path);
         if (!tab[i])
             return (NULL);
         i++;
     }
+    tab[i] = 0;
     return (tab);
 }
 
@@ -92,12 +92,12 @@ t_pipex set_pipex(int ac, char **av, char **envp)
     pipex.infile = av[1];
     pipex.outfile = av[ac - 1];
     pipex.pipe_nbr = ac - 4;
-    // pipex.env_path = get_envp(envp);
+    pipex.env_path = get_envp(envp);
     pipex.opt = get_opt(ac - 3, av);
-    // pipex.cmd = get_cmd(ac - 3, av);
-    // pipex.cpath = get_paths(pipex);
-    // if (!pipex.cmd || !pipex.opt || !pipex.cpath)
-    //     return (err);
+    pipex.cmd = get_cmd(ac - 3, av);
+    pipex.cpath = get_paths(pipex);
+    if (!pipex.cmd || !pipex.opt || !pipex.cpath)
+        return (err);
     return (pipex);
 }
 
@@ -108,12 +108,12 @@ int main(int ac, char **av, char **envp)
     pipex = set_pipex(ac, av, envp);
     if (!pipex.cmd)
         return 1;
-    // int i = 0;
-    // while (i < pipex.cmd_nbr) 
-    // {
-    //     ft_printf("i = %d\t||\tcommand : %s\t||\toption : %s\t||\tpath : %s\n",i, pipex.cmd[i], pipex.opt[i], pipex.cpath[i]);
-    //     i++;
-    // }
+    int i = 0;
+    while (i < pipex.cmd_nbr) 
+    {
+        ft_printf("i = %d\t||\tcommand : %s\t||\toption : %s\t||\tpath : %s\n",i, pipex.cmd[i], pipex.opt[i], pipex.cpath[i]);
+        i++;
+    }
     // if (create_pipes(pipex))
     //     return 1;
     free_stuff(pipex);

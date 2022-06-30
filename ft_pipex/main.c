@@ -6,7 +6,7 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/22 17:25:52 by rvrignon          #+#    #+#             */
-/*   Updated: 2022/06/30 15:41:16 by rvrignon         ###   ########.fr       */
+/*   Updated: 2022/06/30 15:45:45 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,8 +85,6 @@ t_pipex set_pipex(int ac, char **av, char **envp)
     t_pipex pipex;
     t_pipex err;
 
-    (void)err;
-    (void)envp;
     err.cmd = NULL;
     pipex.cmd_nbr = ac - 3;
     pipex.infile = av[1];
@@ -96,8 +94,12 @@ t_pipex set_pipex(int ac, char **av, char **envp)
     pipex.opt = get_opt(ac - 3, av);
     pipex.cmd = get_cmd(ac - 3, av);
     pipex.cpath = get_paths(pipex);
-    if (!pipex.cmd || !pipex.opt || !pipex.cpath)
+    pipex.pfd = (int *)malloc(sizeof(int) * 2 * pipex.pipe_nbr);
+    if (!pipex.cmd || !pipex.opt || !pipex.cpath || !pipex.pfd)
+    {
+        free_stuff(pipex);
         return (err);
+    }
     return (pipex);
 }
 

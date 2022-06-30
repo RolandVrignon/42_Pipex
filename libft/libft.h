@@ -6,7 +6,7 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/29 18:12:32 by rvrignon          #+#    #+#             */
-/*   Updated: 2022/06/13 16:29:01 by rvrignon         ###   ########.fr       */
+/*   Updated: 2022/06/30 18:09:19 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,5 +155,11 @@ void		ft_strrev(char *str);
 char		*process_unsigned(int j, int len, char *str, unsigned int n);
 
 char		*itoa_unsigned(unsigned int n);
+
+// Get Next line
+
+char		*get_next_line(int fd);
+
+size_t		gnl_strlen(const char *s);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/22 17:26:58 by rvrignon          #+#    #+#             */
-/*   Updated: 2022/06/30 16:30:18 by rvrignon         ###   ########.fr       */
+/*   Updated: 2022/06/30 18:03:40 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,9 @@
 
 #include "../libft/libft.h"
 #include <sys/wait.h>
+#include <stdio.h>
+#include <fcntl.h>
+#include <unistd.h>
 
 typedef struct s_pipex {
 	int		pid;
@@ -46,11 +49,15 @@ char	**get_cmd(int cmd_nbr, char **av);
 
 char	**get_opt(int cmd_nbr, char **av);
 
-t_pipex set_pipex(int ac, char **av, char **envp);
+t_pipex set_pipex(int ac, char **av, char **envp, int heredoc);
 
 int		free_stuff(t_pipex pipex);
 
 void	free_double(char **tab);
+
+int		open_outdoc(char **av, int ac, int heredoc);
+
+int		open_indoc(char **av, int heredoc);
 
 // ----------- PIPEX
 

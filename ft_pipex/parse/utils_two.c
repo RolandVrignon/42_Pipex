@@ -6,7 +6,7 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/30 15:47:45 by rvrignon          #+#    #+#             */
-/*   Updated: 2022/06/30 15:48:03 by rvrignon         ###   ########.fr       */
+/*   Updated: 2022/06/30 18:04:47 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,4 +98,54 @@ void print_tab(char **tab)
         ft_printf("%d : %s\n", i, tab[i]);
         i++;
     }
+}
+
+int open_indoc(char **av, int heredoc)
+{
+    int fd;
+    
+    if (!heredoc)
+    {
+        fd = open(av[1], O_RDONLY);
+        if (fd < 0)
+        {
+            perror(av[1]);
+            return 0;
+        }
+    }
+    else
+	{
+		fd = open("tmp.txt", O_RDONLY);
+		if (fd < 0)
+		{
+			perror(av[1]);
+			return 0;
+		}
+	}
+    return (fd);
+}
+
+int open_outdoc(char **av, int ac, int heredoc)
+{
+    int fd;
+    
+    if (!heredoc)
+    {
+        fd = open(av[ac - 1], O_WRONLY);
+        if (fd < 0)
+        {
+            perror(av[ac - 1]);
+            return 0;
+        }
+    }
+    else
+    {
+        fd = open(av[ac - 1], O_APPEND);
+        if (fd < 0)
+        {
+            perror(av[ac - 1]);
+            return 0;
+        }
+    }
+    return (fd);
 }

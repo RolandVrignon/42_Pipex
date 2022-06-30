@@ -6,7 +6,7 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/22 17:26:58 by rvrignon          #+#    #+#             */
-/*   Updated: 2022/06/29 19:23:39 by rvrignon         ###   ########.fr       */
+/*   Updated: 2022/06/30 14:39:56 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,17 +37,19 @@ char	*get_cmd_path(char *cmd, char *envp_PATH);
 
 char	*get_envp(char **envp);
 
-int		create_pipes(t_pipex *pipex);
+int		create_pipes(t_pipex pipex);
 
-char	**get_paths(t_pipex *pipex, char **cmd, char **envp);
+char	**get_paths(t_pipex pipex);
 
 char	**get_cmd(int cmd_nbr, char **av);
 
 char	**get_opt(int cmd_nbr, char **av);
 
-t_pipex *set_pipex(int ac, char **av, char **envp);
+t_pipex set_pipex(int ac, char **av, char **envp);
 
-int		free_stuff(t_pipex *pipex);
+int		free_stuff(t_pipex pipex);
+
+void	free_double(char **tab);
 
 int		main(int ac, char **av, char **envp);
 

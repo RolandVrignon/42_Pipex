@@ -6,7 +6,7 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/22 17:25:52 by rvrignon          #+#    #+#             */
-/*   Updated: 2022/06/29 19:22:05 by rvrignon         ###   ########.fr       */
+/*   Updated: 2022/06/30 14:52:56 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,58 +41,24 @@ char *get_cmd_path(char *cmd, char *envp_PATH)
             return (cmd_path);
         free(cmd_path);
     }
+    free_double(paths);
     return (NULL);
 }
 
-char *get_envp(char **envp)
-{
-    char *envp_PATH;
-    int i;
-
-    i = 0;
-    while (envp[i++])
-    {
-        envp_PATH = ft_strnstr(envp[i], "PATH=", 5);
-        if (envp_PATH)
-        {
-            envp_PATH = ft_substr(envp_PATH, 5, ft_strlen(envp_PATH));
-            if (!envp_PATH)
-                return (0);
-            break;
-        }
-    }
-    return (envp_PATH);
-}
-
-int create_pipes(t_pipex *pipex)
-{
-    int i;
-
-    i = 0;
-    pipex->pfd = malloc(sizeof(int) * pipex->cmd_nbr * 2);
-    if (!pipex->pfd)
-        return (0);
-    while (i < pipex->pipe_nbr)
-    {
-        if (pipe(pipex->pfd + (2 * i)) < 0)
-            return (0);
-        i++;
-    }
-    return (1);
-}
-
-char **get_paths(t_pipex *pipex, char **cmd, char **envp)
+char **get_paths(t_pipex pipex)
 {
     char **tab;
     int i;
     char *envpath;
+    char **cmd;
 
-    envpath = get_envp(envp);
-    tab = malloc(sizeof(char *) * (pipex->cmd_nbr + 1));
+    envpath = pipex.env_path;
+    cmd = pipex.cmd;
+    tab = malloc(sizeof(char *) * (pipex.cmd_nbr + 1));
     if (!tab)
         return (NULL);
     i = 0;
-    while (i < pipex->cmd_nbr)
+    while (i < pipex.cmd_nbr)
     {
         tab[i] = get_cmd_path(cmd[i], envpath);
         if (!tab[i])
@@ -102,100 +68,54 @@ char **get_paths(t_pipex *pipex, char **cmd, char **envp)
     return (tab);
 }
 
-char **get_cmd(int cmd_nbr, char **av)
+void print_tab(char **tab)
 {
     int i;
-    int j;
-    char **tab;
-    char **split;
 
     i = 0;
-    j = 2;
-    tab = malloc(sizeof(char) * (cmd_nbr + 2));
-    if (!tab)
-        return (NULL);
-    while (i < cmd_nbr)
+    while (tab[i])
     {
-        split = ft_split(av[j], ' ');
-        if (!split)
-            return (NULL);
-        tab[i] = split[0];
-        free(split);
-        j++;
+        ft_printf("%d : %s\n", i, tab[i]);
         i++;
     }
-    tab[i] = NULL;
-    return (tab);
 }
 
-char **get_opt(int cmd_nbr, char **av)
+t_pipex set_pipex(int ac, char **av, char **envp)
 {
-    int i;
-    int j;
-    char **tab;
-    char **split;
+    t_pipex pipex;
+    t_pipex err;
 
-    i = 0;
-    j = 2;
-    tab = malloc(sizeof(char) * (cmd_nbr + 2));
-    if (!tab)
-        return (NULL);
-    while (i < cmd_nbr)
-    {
-        split = ft_split(av[j], ' ');
-        if (!split)
-            return (NULL);
-        tab[i] = split[1];
-        free(split);
-        j++;
-        i++;
-    }
-    tab[i] = NULL;
-    return (tab);
-}
-
-t_pipex *set_pipex(int ac, char **av, char **envp)
-{
-    t_pipex *pipex;
-
+    (void)err;
     (void)envp;
-    pipex = malloc(sizeof(t_pipex *) * 1);
-    if (!pipex)
-        return (NULL);
-    pipex->cmd_nbr = ac - 3;
-    pipex->infile = av[1];
-    pipex->outfile = av[ac - 1];
-    pipex->pipe_nbr = ac - 4;
-    pipex->opt = get_opt(ac - 3, av);
-    pipex->cmd = get_cmd(ac - 3, av);
-    pipex->cpath = get_paths(pipex, pipex->cmd, envp);
-    if (!pipex->cmd || !pipex->opt)
-        return (NULL);
+    err.cmd = NULL;
+    pipex.cmd_nbr = ac - 3;
+    pipex.infile = av[1];
+    pipex.outfile = av[ac - 1];
+    pipex.pipe_nbr = ac - 4;
+    // pipex.env_path = get_envp(envp);
+    pipex.opt = get_opt(ac - 3, av);
+    // pipex.cmd = get_cmd(ac - 3, av);
+    // pipex.cpath = get_paths(pipex);
+    // if (!pipex.cmd || !pipex.opt || !pipex.cpath)
+    //     return (err);
     return (pipex);
-}
-
-int free_stuff(t_pipex *pipex)
-{
-    free(pipex->pfd);
-    free(pipex);
-    return (1);
 }
 
 int main(int ac, char **av, char **envp)
 {
-    t_pipex *pipex;
+    t_pipex pipex;
 
     pipex = set_pipex(ac, av, envp);
-    if (!pipex)
+    if (!pipex.cmd)
         return 1;
-    int i = 0;
-    while (i < pipex->cmd_nbr)
-    {
-        ft_printf("i = %d\t||\tcommand : %s\t||\toption : %s\t||\tpath : %s\n",i, pipex->cmd[i], pipex->opt[i], pipex->cpath[i]);
-        i++;
-    }
+    // int i = 0;
+    // while (i < pipex.cmd_nbr) 
+    // {
+    //     ft_printf("i = %d\t||\tcommand : %s\t||\toption : %s\t||\tpath : %s\n",i, pipex.cmd[i], pipex.opt[i], pipex.cpath[i]);
+    //     i++;
+    // }
     // if (create_pipes(pipex))
     //     return 1;
-    // free_stuff(pipex);
+    free_stuff(pipex);
     return 0;
 }

@@ -6,7 +6,7 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/30 13:51:45 by rvrignon          #+#    #+#             */
-/*   Updated: 2022/06/30 15:46:39 by rvrignon         ###   ########.fr       */
+/*   Updated: 2022/06/30 15:49:57 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,20 +30,6 @@ char *get_envp(char **envp)
         }
     }
     return (envp_PATH);
-}
-
-int create_pipes(t_pipex pipex)
-{
-    int i;
-
-    i = 0;
-    while (i < pipex.pipe_nbr)
-    {
-        if (pipe(pipex.pfd + (2 * i)) < 0)
-            return (0);
-        i++;
-    }
-    return (1);
 }
 
 void free_double(char **tab)
@@ -92,29 +78,6 @@ char **get_cmd(int cmd_nbr, char **av)
         if (!split)
             return (NULL);
         tab[i] = ft_strdup(split[0]);
-		free_double(split);
-        i++;
-    }
-    tab[i] = 0;
-    return (tab);
-}
-
-char **get_opt(int cmd_nbr, char **av)
-{
-    int i;
-    char **tab;
-    char **split;
-
-    i = 0;
-    tab = malloc(sizeof(char *) * (cmd_nbr + 1));
-    if (!tab)
-        return (NULL);
-    while (i < cmd_nbr)
-    {
-        split = ft_split(av[i + 2], ' ');
-        if (!split)
-            return (NULL);
-        tab[i] = ft_strdup(split[1]);
 		free_double(split);
         i++;
     }

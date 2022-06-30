@@ -6,7 +6,7 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/22 17:26:58 by rvrignon          #+#    #+#             */
-/*   Updated: 2022/06/30 14:39:56 by rvrignon         ###   ########.fr       */
+/*   Updated: 2022/06/30 15:52:13 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,11 @@ typedef struct s_pipex {
 
 }	t_pipex;
 
+// ---------- PARSING
+
 char	*get_cmd_path(char *cmd, char *envp_PATH);
 
 char	*get_envp(char **envp);
-
-int		create_pipes(t_pipex pipex);
 
 char	**get_paths(t_pipex pipex);
 
@@ -51,7 +51,11 @@ int		free_stuff(t_pipex pipex);
 
 void	free_double(char **tab);
 
-int		main(int ac, char **av, char **envp);
+// ----------- PIPEX
+
+int		create_pipes(t_pipex pipex);
+
+void	close_pipes(t_pipex pipex);
 
 
 #endif

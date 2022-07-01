@@ -6,7 +6,7 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/22 17:25:52 by rvrignon          #+#    #+#             */
-/*   Updated: 2022/07/01 15:02:32 by rvrignon         ###   ########.fr       */
+/*   Updated: 2022/07/01 15:10:07 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,11 @@ int	here_doc(char *limiter)
 	return (1);
 }
 
-static int	main_util(t_pipex pipex)
+static int	main_util(t_pipex pipex, char **envp)
 {
+	int i;
+
+	i = 0;
 	print_test(pipex);
 	if (!create_pipes(pipex))
 		return (0);
@@ -64,10 +67,8 @@ static int	main_util(t_pipex pipex)
 int	main(int ac, char **av, char **envp)
 {
 	t_pipex	pipex;
-	int		i;
 	int		heredoc;
 
-	i = 0;
 	heredoc = ft_strncmp(av[1], "here_doc", ft_strlen(av[1]));
 	if (!heredoc)
 	{
@@ -78,7 +79,7 @@ int	main(int ac, char **av, char **envp)
 		pipex = set_pipex(ac, av, envp, 0);
 	if (!pipex.cmd)
 		return (1);
-	if (!main_util(pipex))
+	if (!main_util(pipex, envp))
 		return (1);
 	if (!heredoc)
 		unlink("tmp.txt");

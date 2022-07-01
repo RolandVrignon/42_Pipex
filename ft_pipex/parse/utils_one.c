@@ -6,7 +6,7 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/30 13:51:45 by rvrignon          #+#    #+#             */
-/*   Updated: 2022/07/01 15:06:20 by rvrignon         ###   ########.fr       */
+/*   Updated: 2022/07/01 15:10:47 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 char	*get_envp(char **envp)
 {
-	char	env_path;
+	char	*env_path;
 	int		i;
 
 	i = 0;

@@ -6,7 +6,7 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/22 17:25:52 by rvrignon          #+#    #+#             */
-/*   Updated: 2022/07/01 15:10:07 by rvrignon         ###   ########.fr       */
+/*   Updated: 2022/07/01 16:38:17 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static void	print_test(t_pipex pipex)
 	ft_printf("outfile\t:\t%d\n", pipex.outfile_fd);
 	while (pipex.cmd[i])
 	{
-		ft_printf("i = %d\t||\tcommand : %s\t||\toption : %s\t||\tpath : %s\n",
+		ft_printf("i = %d\t||\tcommand : %s\t||\toption : %s\t\t||\tpath : %s\n",
 			i, pipex.cmd[i], pipex.opt[i], pipex.cpath[i]);
 		i++;
 	}
@@ -47,7 +47,7 @@ int	here_doc(char *limiter)
 
 static int	main_util(t_pipex pipex, char **envp)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	print_test(pipex);
@@ -64,24 +64,37 @@ static int	main_util(t_pipex pipex, char **envp)
 	return (1);
 }
 
+t_pipex	init(void)
+{
+	t_pipex	pipex;
+
+	pipex.env_path = 0;
+	pipex.pfd = 0;
+	pipex.cmd = 0;
+	pipex.opt = 0;
+	pipex.cpath = 0;
+	return (pipex);
+}
+
 int	main(int ac, char **av, char **envp)
 {
 	t_pipex	pipex;
 	int		heredoc;
 
+	if (ac < 2)
+		return (1);
+	pipex = init();
 	heredoc = ft_strncmp(av[1], "here_doc", ft_strlen(av[1]));
 	if (!heredoc)
-	{
-		here_doc(av[2]);
-		pipex = set_pipex(ac, av, envp, 1);
-	}
+		heredoc = here_doc(av[2]);
 	else
-		pipex = set_pipex(ac, av, envp, 0);
-	if (!pipex.cmd)
+		heredoc = 0;
+	pipex = set_pipex(ac, av, envp, heredoc);
+	if (pipex.infile_fd < 0)
 		return (1);
 	if (!main_util(pipex, envp))
 		return (1);
-	if (!heredoc)
+	if (heredoc)
 		unlink("tmp.txt");
 	free_stuff(pipex);
 	return (0);

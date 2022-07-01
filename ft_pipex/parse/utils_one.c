@@ -6,7 +6,7 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/30 13:51:45 by rvrignon          #+#    #+#             */
-/*   Updated: 2022/07/01 15:10:47 by rvrignon         ###   ########.fr       */
+/*   Updated: 2022/07/01 16:38:23 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,16 +48,15 @@ void	free_double(char **tab)
 
 int	free_stuff(t_pipex pipex)
 {
-	(void)pipex;
-	if (pipex.env_path)
+	if (pipex.env_path != 0)
 		free(pipex.env_path);
-	if (pipex.pfd)
+	if (pipex.pfd != 0)
 		free(pipex.pfd);
-	if (pipex.cmd)
+	if (pipex.cmd != 0)
 		free_double(pipex.cmd);
-	if (pipex.opt)
+	if (pipex.opt != 0)
 		free_double(pipex.opt);
-	if (pipex.cpath)
+	if (pipex.cpath != 0)
 		free_double(pipex.cpath);
 	return (1);
 }

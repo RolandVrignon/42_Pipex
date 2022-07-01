@@ -6,7 +6,7 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/30 15:47:45 by rvrignon          #+#    #+#             */
-/*   Updated: 2022/07/01 15:05:01 by rvrignon         ###   ########.fr       */
+/*   Updated: 2022/07/01 16:51:48 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,4 +88,21 @@ char	**get_paths(t_pipex pipex)
 	}
 	tab[i] = 0;
 	return (tab);
+}
+
+void	print_test(t_pipex pipex)
+{
+	int	i;
+
+	i = 0;
+	ft_printf("PIPEEEEX\n");
+	ft_printf("Nb cmd\t:\t%d\n", pipex.cmd_nbr);
+	ft_printf("infile\t:\t%d\n", pipex.infile_fd);
+	ft_printf("outfile\t:\t%d\n", pipex.outfile_fd);
+	while (pipex.cmd[i])
+	{
+		ft_printf("i = %d\t||\tcommand : %s\t||\toption : %s\t\t||\tpath : %s\n",
+			i, pipex.cmd[i], pipex.opt[i], pipex.cpath[i]);
+		i++;
+	}
 }

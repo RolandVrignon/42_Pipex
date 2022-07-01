@@ -6,7 +6,7 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 15:03:16 by rvrignon          #+#    #+#             */
-/*   Updated: 2022/07/01 16:34:06 by rvrignon         ###   ########.fr       */
+/*   Updated: 2022/07/01 16:54:40 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,10 +51,7 @@ t_pipex	set_pipex(int ac, char **av, char **envp, int heredoc)
 	if (pipex.outfile_fd < 0)
 		perror(av[ac - 1]);
 	if (pipex.infile_fd < 0 || pipex.outfile_fd < 0)
-	{
-		free_stuff(pipex);
 		return (err);
-	}
 	pipex.env_path = get_envp(envp);
 	pipex.cpath = get_paths(pipex);
 	pipex.pfd = (int *)malloc(sizeof(int) * 2 * pipex.pipe_nbr);
@@ -64,4 +61,20 @@ t_pipex	set_pipex(int ac, char **av, char **envp, int heredoc)
 		return (err);
 	}
 	return (pipex);
+}
+
+int	here_doc(char *limiter)
+{
+	int		fd;
+	char	*line;
+
+	fd = open("tmp.txt", O_WRONLY | O_CREAT | O_TRUNC, 777);
+	line = get_next_line(0);
+	while (ft_strncmp(line, limiter, ft_strlen(limiter)))
+	{
+		write(fd, line, ft_strlen(line));
+		line = get_next_line(0);
+	}
+	close(fd);
+	return (1);
 }

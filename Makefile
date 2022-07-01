@@ -6,13 +6,14 @@
 #    By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/22 17:24:14 by rvrignon          #+#    #+#              #
-#    Updated: 2022/06/30 15:52:35 by rvrignon         ###   ########.fr        #
+#    Updated: 2022/07/01 15:03:41 by rvrignon         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 SRC =  	ft_pipex/main.c \
 		ft_pipex/parse/utils_one.c \
 		ft_pipex/parse/utils_two.c \
+		ft_pipex/parse/utils_three.c \
 		ft_pipex/pipex/utils_one.c \
 
 OBJ		=	$(SRC:.c=.o)
@@ -38,14 +39,15 @@ $(NAME):	$(OBJ)
 
 clean:		
 			$(MAKE) fclean -C ./libft
-			$(RM) $(NAME_CHECKER) $(NAME) $(OBJ) $(OBJ_CHECKER)
+			$(RM) $(NAME) $(OBJ)
 			@echo "\033[1;32m"
 			@echo "\033[4;36mPipex is now clean!\033[0m"
 			@echo "\033[4;32mGOOD WORK\033[0m"
 
 fclean:		clean
 			$(MAKE) fclean -C ./libft
-			$(RM) $(PROG) $(PROG_CHECKER)
+			$(RM) $(PROG)
+			$(RM) *.txt
 			@echo "\033[1;32m"
 			@echo "\033[4;36mPipex is now fcleaned!\033[0m"
 			@echo "\033[4;32mGOOD WORK\033[0m"

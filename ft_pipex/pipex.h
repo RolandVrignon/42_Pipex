@@ -6,7 +6,7 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/22 17:26:58 by rvrignon          #+#    #+#             */
-/*   Updated: 2022/06/30 18:03:40 by rvrignon         ###   ########.fr       */
+/*   Updated: 2022/07/01 14:36:09 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,11 +45,13 @@ char	*get_envp(char **envp);
 
 char	**get_paths(t_pipex pipex);
 
-char	**get_cmd(int cmd_nbr, char **av);
+char	**get_cmd(int cmd_nbr, char **av, int heredoc);
 
-char	**get_opt(int cmd_nbr, char **av);
+char	**get_opt(int cmd_nbr, char **av, int heredoc);
 
-t_pipex set_pipex(int ac, char **av, char **envp, int heredoc);
+t_pipex set_pipex(int ac, char **av, char **envp);
+
+t_pipex set_pipex_heredoc(int ac, char **av, char **envp);
 
 int		free_stuff(t_pipex pipex);
 

@@ -6,25 +6,27 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/30 15:47:45 by rvrignon          #+#    #+#             */
-/*   Updated: 2022/06/30 18:04:47 by rvrignon         ###   ########.fr       */
+/*   Updated: 2022/07/01 14:21:56 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../pipex.h"
 
-char **get_opt(int cmd_nbr, char **av)
+char **get_opt(int cmd_nbr, char **av, int heredoc)
 {
     int i;
+    int j;
     char **tab;
     char **split;
 
     i = 0;
+    j = 2 + heredoc;
     tab = malloc(sizeof(char *) * (cmd_nbr + 1));
     if (!tab)
         return (NULL);
     while (i < cmd_nbr)
     {
-        split = ft_split(av[i + 2], ' ');
+        split = ft_split(av[i + j], ' ');
         if (!split)
             return (NULL);
         tab[i] = ft_strdup(split[1]);

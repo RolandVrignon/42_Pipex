@@ -6,7 +6,7 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/30 15:50:01 by rvrignon          #+#    #+#             */
-/*   Updated: 2022/07/05 11:21:32 by rvrignon         ###   ########.fr       */
+/*   Updated: 2022/07/05 11:54:15 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,10 @@ void	create_childs(t_pipex pipex, int i, char **envp)
 	char	*options[3];
 
 	options[0] = pipex.cmd[i];
-	options[1] = pipex.opt[i];
+	if (!strncmp(pipex.opt[i], "pipexnull", ft_strlen(pipex.opt[i])))
+		options[1] = NULL;
+	else
+		options[1] = pipex.opt[i];
 	options[2] = NULL;
 	pipex.pid = fork();
 	if (pipex.pid == 0)

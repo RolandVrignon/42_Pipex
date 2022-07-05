@@ -6,7 +6,7 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/30 15:47:45 by rvrignon          #+#    #+#             */
-/*   Updated: 2022/07/01 16:51:48 by rvrignon         ###   ########.fr       */
+/*   Updated: 2022/07/05 10:02:43 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,12 @@ char	**get_opt(int cmd_nbr, char **av, int heredoc)
 	return (tab);
 }
 
+static char	*return_value(char *cmd_path, char **paths)
+{
+	free_double(paths);
+	return (cmd_path);
+}
+
 char	*get_cmd_path(char *cmd, char *envp_PATH)
 {
 	char	**paths;
@@ -48,24 +54,19 @@ char	*get_cmd_path(char *cmd, char *envp_PATH)
 	if (!paths)
 		return (0);
 	i = 0;
-	while (paths[i])
+	while (paths[i++])
 	{
 		tmp = paths[i];
 		paths[i] = ft_strjoin(paths[i], "/");
 		free(tmp);
-		i++;
 	}
 	i = 0;
-	while (paths[i])
+	while (paths[i++])
 	{
 		cmd_path = ft_strjoin(paths[i], cmd);
 		if (access(cmd_path, F_OK | X_OK) == 0)
-		{
-			free_double(paths);
-			return (cmd_path);
-		}
+			return (return_value(cmd_path, paths));
 		free(cmd_path);
-		i++;
 	}
 	return (NULL);
 }

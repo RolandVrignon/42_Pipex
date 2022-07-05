@@ -6,7 +6,7 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/22 17:26:58 by rvrignon          #+#    #+#             */
-/*   Updated: 2022/07/05 09:42:58 by rvrignon         ###   ########.fr       */
+/*   Updated: 2022/07/05 09:57:44 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	close_pipes(t_pipex pipex);
 
 void	make_dup(int in, int out);
 
-int		create_childs(t_pipex pipex, int i, char **envp);
+void	create_childs(t_pipex pipex, int i, char **envp);
 
 t_pipex	init(void);
 

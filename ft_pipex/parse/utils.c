@@ -6,12 +6,11 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/23 16:21:48 by rvrignon          #+#    #+#             */
-/*   Updated: 2022/07/05 09:34:50 by rvrignon         ###   ########.fr       */
+/*   Updated: 2022/07/05 09:57:26 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../pipex.h"
-
 
 t_pipex	heredoc_stuff(int ac, char **av, int heredoc)
 {

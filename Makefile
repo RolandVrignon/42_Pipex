@@ -6,7 +6,7 @@
 #    By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/22 17:24:14 by rvrignon          #+#    #+#              #
-#    Updated: 2022/07/05 09:35:05 by rvrignon         ###   ########.fr        #
+#    Updated: 2022/07/05 11:33:37 by rvrignon         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,7 +35,7 @@ $(NAME):	$(OBJ)
 			$(CC) $(CFLAGS) -o $(PROG) $(SRC) $(NAME)
 			@echo "\033[1;32m"
 			@echo "\033[4;36mPIPEEEEX"
-			@echo "\033[4;32mGOOD WORK"
+			@echo "\033[4;32mGOOD WORK\033[0m"
 
 clean:		
 			$(MAKE) fclean -C ./libft

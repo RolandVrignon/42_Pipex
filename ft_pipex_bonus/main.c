@@ -6,7 +6,7 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/22 17:25:52 by rvrignon          #+#    #+#             */
-/*   Updated: 2022/07/05 17:47:00 by rvrignon         ###   ########.fr       */
+/*   Updated: 2022/07/05 17:28:22 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,24 +51,32 @@ static int	err(int heredoc)
 
 static int	arg_err(void)
 {
-	ft_printf("To few or to many arguments");
+	ft_printf("Miss arguments to work");
 	return (1);
 }
 
 int	main(int ac, char **av, char **envp)
 {
 	t_pipex	pipex;
+	int		heredoc;
 
-	if (ac != 5)
-		return (arg_err());
 	if (!envp[0])
 		return (0);
+	if (ac < 5)
+		return (arg_err());
 	pipex = init();
-	pipex = set_pipex(ac, av, envp, 0);
+	heredoc = ft_strncmp(av[1], "here_doc", ft_strlen(av[1]));
+	if (!heredoc)
+		heredoc = here_doc(av[2]);
+	else
+		heredoc = 0;
+	pipex = set_pipex(ac, av, envp, heredoc);
 	if (pipex.infile_fd < 0)
-		return (err(0));
+		return (err(heredoc));
 	if (!main_util(pipex, envp))
-		return (err(0));
+		return (err(heredoc));
+	if (heredoc)
+		unlink("tmp.txt");
 	free_stuff(pipex);
 	return (0);
 }

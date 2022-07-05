@@ -6,7 +6,7 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/30 15:47:45 by rvrignon          #+#    #+#             */
-/*   Updated: 2022/07/05 10:48:54 by rvrignon         ###   ########.fr       */
+/*   Updated: 2022/07/05 11:18:58 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,10 @@ char	**get_opt(int cmd_nbr, char **av, int heredoc)
 		split = ft_split(av[i + j], ' ');
 		if (!split)
 			return (NULL);
-		tab[i] = ft_strdup(split[1]);
+		if (!split[1])
+			tab[i] = NULL;
+		else
+			tab[i] = ft_strdup(split[1]);
 		free_double(split);
 		i++;
 	}

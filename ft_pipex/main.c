@@ -6,7 +6,7 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/22 17:25:52 by rvrignon          #+#    #+#             */
-/*   Updated: 2022/07/05 10:03:16 by rvrignon         ###   ########.fr       */
+/*   Updated: 2022/07/05 10:34:04 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,13 +49,19 @@ static int	err(int heredoc)
 	return (1);
 }
 
+static int	arg_err(void)
+{
+	ft_printf("Miss arguments to work");
+	return (1);
+}
+
 int	main(int ac, char **av, char **envp)
 {
 	t_pipex	pipex;
 	int		heredoc;
 
-	if (ac < 2)
-		return (1);
+	if (ac < 5)
+		return (arg_err());
 	pipex = init();
 	heredoc = ft_strncmp(av[1], "here_doc", ft_strlen(av[1]));
 	if (!heredoc)

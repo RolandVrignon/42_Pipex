@@ -6,7 +6,7 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/23 16:21:48 by rvrignon          #+#    #+#             */
-/*   Updated: 2022/07/05 09:57:26 by rvrignon         ###   ########.fr       */
+/*   Updated: 2022/07/05 10:56:46 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,6 @@ t_pipex	heredoc_stuff(int ac, char **av, int heredoc)
 		return (err);
 	}
 	pipex.pipe_nbr = ac - (4 + heredoc);
-	pipex.opt = get_opt(ac - (3 + heredoc), av, (0 + heredoc));
-	pipex.cmd = get_cmd(ac - (3 + heredoc), av, (0 + heredoc));
 	return (pipex);
 }
 
@@ -53,6 +51,8 @@ t_pipex	set_pipex(int ac, char **av, char **envp, int heredoc)
 	if (pipex.infile_fd < 0 || pipex.outfile_fd < 0)
 		return (err);
 	pipex.env_path = get_envp(envp);
+	pipex.opt = get_opt(ac - (3 + heredoc), av, (0 + heredoc));
+	pipex.cmd = get_cmd(ac - (3 + heredoc), av, (0 + heredoc));
 	pipex.cpath = get_paths(pipex);
 	pipex.pfd = (int *)malloc(sizeof(int) * 2 * pipex.pipe_nbr);
 	if (!pipex.cmd || !pipex.opt || !pipex.cpath || !pipex.pfd)
@@ -70,7 +70,7 @@ int	here_doc(char *limiter)
 
 	fd = open("tmp.txt", O_WRONLY | O_CREAT | O_TRUNC, 777);
 	line = get_next_line(0);
-	while (ft_strncmp(line, limiter, ft_strlen(limiter)))
+	while (ft_strncmp(line, limiter, (ft_strlen(line) - 1)))
 	{
 		write(fd, line, ft_strlen(line));
 		free(line);

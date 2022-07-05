@@ -6,7 +6,7 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/30 15:47:45 by rvrignon          #+#    #+#             */
-/*   Updated: 2022/07/05 10:02:43 by rvrignon         ###   ########.fr       */
+/*   Updated: 2022/07/05 10:48:54 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,10 +64,11 @@ char	*get_cmd_path(char *cmd, char *envp_PATH)
 	while (paths[i++])
 	{
 		cmd_path = ft_strjoin(paths[i], cmd);
-		if (access(cmd_path, F_OK | X_OK) == 0)
+		if (!access(cmd_path, F_OK | X_OK))
 			return (return_value(cmd_path, paths));
 		free(cmd_path);
 	}
+	free_double(paths);
 	return (NULL);
 }
 
@@ -84,26 +85,30 @@ char	**get_paths(t_pipex pipex)
 	{
 		tab[i] = get_cmd_path(pipex.cmd[i], pipex.env_path);
 		if (!tab[i])
+		{
+			perror(pipex.cmd[i]);
+			free_double(tab);
 			return (NULL);
+		}
 		i++;
 	}
 	tab[i] = 0;
 	return (tab);
 }
 
-void	print_test(t_pipex pipex)
-{
-	int	i;
+// void	print_test(t_pipex pipex)
+// {
+// 	int	i;
 
-	i = 0;
-	ft_printf("PIPEEEEX\n");
-	ft_printf("Nb cmd\t:\t%d\n", pipex.cmd_nbr);
-	ft_printf("infile\t:\t%d\n", pipex.infile_fd);
-	ft_printf("outfile\t:\t%d\n", pipex.outfile_fd);
-	while (pipex.cmd[i])
-	{
-		ft_printf("i = %d\t||\tcommand : %s\t||\toption : %s\t\t||\tpath : %s\n",
-			i, pipex.cmd[i], pipex.opt[i], pipex.cpath[i]);
-		i++;
-	}
-}
+// 	i = 0;
+// 	ft_printf("PIPEEEEX\n");
+// 	ft_printf("Nb cmd\t:\t%d\n", pipex.cmd_nbr);
+// 	ft_printf("infile\t:\t%d\n", pipex.infile_fd);
+// 	ft_printf("outfile\t:\t%d\n", pipex.outfile_fd);
+// 	while (pipex.cmd[i])
+// 	{
+// 		ft_printf("i = %d\t||\tcommand : %s\t||\toption : %s\t\t||\tpath : %s\n",
+// 			i, pipex.cmd[i], pipex.opt[i], pipex.cpath[i]);
+// 		i++;
+// 	}
+// }

@@ -6,7 +6,7 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/29 18:12:32 by rvrignon          #+#    #+#             */
-/*   Updated: 2022/06/30 18:09:19 by rvrignon         ###   ########.fr       */
+/*   Updated: 2022/07/05 09:55:11 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 
 # define HEXALOWER		"0123456789abcdef"
 # define HEXAUPPER		"0123456789ABCDEF"
-# define BUFFER_SIZE	10
+# define BUFFER_SIZE	20
 
 typedef struct s_list
 {

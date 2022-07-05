@@ -6,7 +6,7 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/04 20:26:04 by rvrignon          #+#    #+#             */
-/*   Updated: 2022/06/30 18:09:05 by rvrignon         ###   ########.fr       */
+/*   Updated: 2022/07/05 09:55:36 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,9 +118,9 @@ char	*get_next_line(int fd)
 	size_t			status;
 
 	buffer = malloc(sizeof(char) * (BUFFER_SIZE + 1));
+	status = 1;
 	if (!buffer)
 		return (NULL);
-	status = 1;
 	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, buffer, 0) < 0)
 	{
 		free(buffer);

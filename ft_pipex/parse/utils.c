@@ -1,16 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils_three.c                                      :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/07/01 15:03:16 by rvrignon          #+#    #+#             */
-/*   Updated: 2022/07/01 16:54:40 by rvrignon         ###   ########.fr       */
+/*   Created: 2022/06/23 16:21:48 by rvrignon          #+#    #+#             */
+/*   Updated: 2022/07/05 09:34:50 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../pipex.h"
+
 
 t_pipex	heredoc_stuff(int ac, char **av, int heredoc)
 {
@@ -73,8 +74,10 @@ int	here_doc(char *limiter)
 	while (ft_strncmp(line, limiter, ft_strlen(limiter)))
 	{
 		write(fd, line, ft_strlen(line));
+		free(line);
 		line = get_next_line(0);
 	}
+	free(line);
 	close(fd);
 	return (1);
 }

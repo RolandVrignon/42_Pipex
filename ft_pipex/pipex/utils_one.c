@@ -6,7 +6,7 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/30 15:50:01 by rvrignon          #+#    #+#             */
-/*   Updated: 2022/07/01 15:06:57 by rvrignon         ###   ########.fr       */
+/*   Updated: 2022/07/05 09:45:38 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,11 +44,13 @@ void	make_dup(int in, int out)
 	dup2(out, 1);
 }
 
-void	create_childs(t_pipex pipex, int i, char **envp)
+int	create_childs(t_pipex pipex, int i, char **envp)
 {
-	char	*options[3] = {pipex.cmd[i], pipex.opt[i], NULL};
+	char	*options[3];
 
-	ft_printf("%s, {%s, %s}\n", pipex.cpath[i], options[0], options[1]);
+	options[0] = pipex.cmd[i];
+	options[1] = pipex.opt[i];
+	options[2] = NULL;
 	pipex.pid = fork();
 	if (pipex.pid == 0)
 	{
@@ -60,5 +62,7 @@ void	create_childs(t_pipex pipex, int i, char **envp)
 			make_dup(pipex.pfd[i * 2 - 2], pipex.pfd[i * 2 + 1]);
 		close_pipes(pipex);
 		execve(pipex.cpath[i], options, envp);
+		free_double(options);
 	}
+	return (1); 
 }

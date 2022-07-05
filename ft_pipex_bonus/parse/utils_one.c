@@ -6,7 +6,7 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/30 13:51:45 by rvrignon          #+#    #+#             */
-/*   Updated: 2022/07/01 16:38:23 by rvrignon         ###   ########.fr       */
+/*   Updated: 2022/07/05 17:59:03 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,10 @@ char	*get_envp(char **envp)
 			env_path = ft_substr(env_path, 5, ft_strlen(env_path));
 			if (!env_path)
 				return (0);
-			break ;
+			return (env_path);
 		}
 	}
-	return (env_path);
+	return (0);
 }
 
 void	free_double(char **tab)

@@ -6,7 +6,7 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/22 17:25:52 by rvrignon          #+#    #+#             */
-/*   Updated: 2022/07/05 17:28:22 by rvrignon         ###   ########.fr       */
+/*   Updated: 2022/07/05 18:13:55 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,11 +42,16 @@ t_pipex	init(void)
 	return (pipex);
 }
 
-static int	err(int heredoc)
+static int	finish(t_pipex pipex, int heredoc)
 {
+	if (pipex.infile_fd)
+		close(pipex.infile_fd);
+	if (pipex.outfile_fd)
+		close(pipex.outfile_fd);
+	free_stuff(pipex);
 	if (heredoc)
 		unlink("tmp.txt");
-	return (1);
+	return (0);
 }
 
 static int	arg_err(void)
@@ -71,12 +76,9 @@ int	main(int ac, char **av, char **envp)
 	else
 		heredoc = 0;
 	pipex = set_pipex(ac, av, envp, heredoc);
-	if (pipex.infile_fd < 0)
-		return (err(heredoc));
+	if (pipex.err)
+		return (finish(pipex, heredoc));
 	if (!main_util(pipex, envp))
-		return (err(heredoc));
-	if (heredoc)
-		unlink("tmp.txt");
-	free_stuff(pipex);
-	return (0);
+		return (finish(pipex, heredoc));
+	return (finish(pipex, heredoc));
 }

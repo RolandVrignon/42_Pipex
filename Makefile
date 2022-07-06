@@ -6,7 +6,7 @@
 #    By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/22 17:24:14 by rvrignon          #+#    #+#              #
-#    Updated: 2022/07/05 17:50:36 by rvrignon         ###   ########.fr        #
+#    Updated: 2022/07/06 14:46:33 by rvrignon         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -48,7 +48,9 @@ $(NAME):	$(OBJ)
 			@echo "\033[4;36mPIPEEEEX Mandatory"
 			@echo "\033[4;32mGOOD WORK\033[0m"
 
-bonus:		$(OBJB)
+bonus:		$(NAMEB)		
+
+$(NAMEB):	$(OBJB)
 			$(MAKE) all -C libft
 			cp libft/libft.a $(NAMEB)
 			ar rcs $(NAMEB) $(OBJB)
@@ -74,6 +76,8 @@ fclean:		clean
 			@echo "\033[4;36mPipex is now fcleaned!\033[0m"
 			@echo "\033[4;32mGOOD WORK\033[0m"
 
-re:			fclean $(NAME) $(NAME_CHECKER)
+re:			fclean $(NAME)
 
-.PHONY:		all clean fclean re
+reb:		fclean $(NAMEB)
+
+.PHONY:		all clean fclean re bonus

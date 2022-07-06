@@ -6,7 +6,7 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/30 13:51:45 by rvrignon          #+#    #+#             */
-/*   Updated: 2022/07/05 17:59:03 by rvrignon         ###   ########.fr       */
+/*   Updated: 2022/07/06 14:29:58 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ char	*get_envp(char **envp)
 	int		i;
 
 	i = 0;
+	if (!envp[0])
+		return (0);
 	while (envp[i++])
 	{
 		env_path = ft_strnstr(envp[i], "PATH=", 5);
@@ -56,8 +58,6 @@ int	free_stuff(t_pipex pipex)
 		free_double(pipex.cmd);
 	if (pipex.opt != 0)
 		free_double(pipex.opt);
-	if (pipex.cpath != 0)
-		free_double(pipex.cpath);
 	return (1);
 }
 

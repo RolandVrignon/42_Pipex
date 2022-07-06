@@ -6,7 +6,7 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/22 17:25:52 by rvrignon          #+#    #+#             */
-/*   Updated: 2022/07/05 18:13:55 by rvrignon         ###   ########.fr       */
+/*   Updated: 2022/07/06 14:35:12 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ t_pipex	init(void)
 	pipex.pfd = 0;
 	pipex.cmd = 0;
 	pipex.opt = 0;
-	pipex.cpath = 0;
 	return (pipex);
 }
 

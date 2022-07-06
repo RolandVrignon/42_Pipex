@@ -6,7 +6,7 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/30 15:50:01 by rvrignon          #+#    #+#             */
-/*   Updated: 2022/07/05 17:03:37 by rvrignon         ###   ########.fr       */
+/*   Updated: 2022/07/06 14:49:45 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,14 +46,15 @@ void	make_dup(int in, int out)
 
 void	create_childs(t_pipex pipex, int i, char **envp)
 {
-	char	*options[3];
+	char	*opt[3];
+	char	*env;
 
-	options[0] = pipex.cmd[i];
+	opt[0] = pipex.cmd[i];
 	if (!strncmp(pipex.opt[i], "pipexnull", ft_strlen(pipex.opt[i])))
-		options[1] = NULL;
+		opt[1] = NULL;
 	else
-		options[1] = pipex.opt[i];
-	options[2] = NULL;
+		opt[1] = pipex.opt[i];
+	opt[2] = NULL;
 	pipex.pid = fork();
 	if (pipex.pid == 0)
 	{
@@ -64,6 +65,11 @@ void	create_childs(t_pipex pipex, int i, char **envp)
 		else
 			make_dup(pipex.pfd[i * 2 - 2], pipex.pfd[i * 2 + 1]);
 		close_pipes(pipex);
-		execve(pipex.cpath[i], options, envp);
+		if (execve(pipex.cmd[i], opt, envp) == -1)
+		{
+			env = pipex.env_path;
+			if (execve(get_cmd_path(pipex.cmd[i], env), opt, envp) == -1)
+				perror(pipex.cmd[i]);
+		}
 	}
 }

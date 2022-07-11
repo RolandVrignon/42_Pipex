@@ -6,7 +6,7 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/30 15:50:01 by rvrignon          #+#    #+#             */
-/*   Updated: 2022/07/11 16:59:27 by rvrignon         ###   ########.fr       */
+/*   Updated: 2022/07/11 17:21:38 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ void	create_childs(t_pipex pipex, int i, char **envp)
 		if (!cpath)
 		{
 			msg_pipe(pipex.cmd[i]);
+			free(cpath);
 			exit (1);
 		}
 		execve(cpath, opt, envp);

@@ -6,7 +6,7 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/22 17:26:58 by rvrignon          #+#    #+#             */
-/*   Updated: 2022/07/11 16:42:39 by rvrignon         ###   ########.fr       */
+/*   Updated: 2022/07/11 17:28:51 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,9 @@ typedef struct s_pipex {
 	char	*env_path;
 	int		*pfd;
 	int		pipe_nbr;
+	char	*cpath;
 	char	**cmd;
 	char	**opt;
-	char	**cpath;
 	int		err;
 }	t_pipex;
 

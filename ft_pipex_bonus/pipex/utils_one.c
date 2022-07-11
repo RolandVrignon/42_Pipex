@@ -6,7 +6,7 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/30 15:50:01 by rvrignon          #+#    #+#             */
-/*   Updated: 2022/07/11 17:21:38 by rvrignon         ###   ########.fr       */
+/*   Updated: 2022/07/11 19:37:17 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,6 @@ static void	msg_pipe(char *arg)
 void	create_childs(t_pipex pipex, int i, char **envp)
 {
 	char	*opt[3];
-	char	*cpath;
 
 	opt[0] = pipex.cmd[i];
 	if (!strncmp(pipex.opt[i], "pipexnull", ft_strlen(pipex.opt[i])))
@@ -74,13 +73,13 @@ void	create_childs(t_pipex pipex, int i, char **envp)
 		else
 			make_dup(pipex.pfd[i * 2 - 2], pipex.pfd[i * 2 + 1]);
 		close_pipes(pipex);
-		cpath = get_cmd_path(pipex.cmd[i], pipex.env_path);
-		if (!cpath)
+		pipex.cpath = get_cmd_path(pipex.cmd[i], pipex.env_path);
+		if (!pipex.cpath)
 		{
 			msg_pipe(pipex.cmd[i]);
-			free(cpath);
-			exit (1);
+			free(pipex.cpath);
+			exit (6);
 		}
-		execve(cpath, opt, envp);
+		execve(pipex.cpath, opt, envp);
 	}
 }

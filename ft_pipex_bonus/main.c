@@ -6,7 +6,7 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/22 17:25:52 by rvrignon          #+#    #+#             */
-/*   Updated: 2022/07/11 17:23:52 by rvrignon         ###   ########.fr       */
+/*   Updated: 2022/07/11 19:40:42 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,15 +46,18 @@ static int	finish(t_pipex pipex, int heredoc)
 	int	i;
 	
 	i = 0;
-	if (pipex.infile_fd)
+	if (pipex.infile_fd > 0)
 		close(pipex.infile_fd);
-	if (pipex.outfile_fd)
+	if (pipex.outfile_fd > 0)
 		close(pipex.outfile_fd);
 	while (i < pipex.pipe_nbr)
 	{
 		close(pipex.pfd[i]);
 		i++;
 	}
+	close(0);
+	close(1);
+	close(2);
 	free_stuff(pipex);
 	if (heredoc)
 		unlink("tmp.txt");

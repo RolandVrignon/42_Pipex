@@ -6,7 +6,7 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/30 15:47:45 by rvrignon          #+#    #+#             */
-/*   Updated: 2022/07/11 17:17:31 by rvrignon         ###   ########.fr       */
+/*   Updated: 2022/07/11 19:28:50 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,11 +69,13 @@ char	*get_cmd_path(char *cmd, char *envp_PATH)
 	while (paths[i++])
 	{
 		cmd_path = ft_strjoin(paths[i], cmd);
-		if (access(cmd_path, 0) == 0)
-			return (return_value(cmd_path, paths));
+		if (cmd_path)
+		{
+			if (access(cmd_path, 0) == 0)
+				return (return_value(cmd_path, paths));
+		}
 		free(cmd_path);
 	}
-	free(cmd_path);
 	free_double(paths);
 	return (NULL);
 }

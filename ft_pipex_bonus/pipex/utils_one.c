@@ -6,7 +6,7 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/30 15:50:01 by rvrignon          #+#    #+#             */
-/*   Updated: 2022/07/06 14:49:45 by rvrignon         ###   ########.fr       */
+/*   Updated: 2022/07/11 16:33:53 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,15 @@ void	make_dup(int in, int out)
 	dup2(out, 1);
 }
 
+static void	msg_pipe(char *arg)
+{
+	char *err = "Command not found: ";
+	
+	write(2, err, ft_strlen(err));
+	write(2, arg, ft_strlen(arg));
+	write(2, "\n", 1);
+}
+
 void	create_childs(t_pipex pipex, int i, char **envp)
 {
 	char	*opt[3];
@@ -69,7 +78,7 @@ void	create_childs(t_pipex pipex, int i, char **envp)
 		{
 			env = pipex.env_path;
 			if (execve(get_cmd_path(pipex.cmd[i], env), opt, envp) == -1)
-				perror(pipex.cmd[i]);
+				msg_pipe(pipex.cmd[i]);
 		}
 	}
 }

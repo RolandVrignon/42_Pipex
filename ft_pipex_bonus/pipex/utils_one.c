@@ -6,7 +6,7 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/30 15:50:01 by rvrignon          #+#    #+#             */
-/*   Updated: 2022/07/11 16:33:53 by rvrignon         ###   ########.fr       */
+/*   Updated: 2022/07/11 16:59:27 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,17 +46,17 @@ void	make_dup(int in, int out)
 
 static void	msg_pipe(char *arg)
 {
-	char *err = "Command not found: ";
+	char *err = ": command not found";
 	
-	write(2, err, ft_strlen(err));
 	write(2, arg, ft_strlen(arg));
+	write(2, err, ft_strlen(err));
 	write(2, "\n", 1);
 }
 
 void	create_childs(t_pipex pipex, int i, char **envp)
 {
 	char	*opt[3];
-	char	*env;
+	char	*cpath;
 
 	opt[0] = pipex.cmd[i];
 	if (!strncmp(pipex.opt[i], "pipexnull", ft_strlen(pipex.opt[i])))
@@ -74,11 +74,12 @@ void	create_childs(t_pipex pipex, int i, char **envp)
 		else
 			make_dup(pipex.pfd[i * 2 - 2], pipex.pfd[i * 2 + 1]);
 		close_pipes(pipex);
-		if (execve(pipex.cmd[i], opt, envp) == -1)
+		cpath = get_cmd_path(pipex.cmd[i], pipex.env_path);
+		if (!cpath)
 		{
-			env = pipex.env_path;
-			if (execve(get_cmd_path(pipex.cmd[i], env), opt, envp) == -1)
-				msg_pipe(pipex.cmd[i]);
+			msg_pipe(pipex.cmd[i]);
+			exit (1);
 		}
+		execve(cpath, opt, envp);
 	}
 }

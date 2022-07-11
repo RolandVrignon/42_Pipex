@@ -6,7 +6,7 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/30 15:47:45 by rvrignon          #+#    #+#             */
-/*   Updated: 2022/07/05 11:52:59 by rvrignon         ###   ########.fr       */
+/*   Updated: 2022/07/11 16:55:14 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,8 @@ char	*get_cmd_path(char *cmd, char *envp_PATH)
 	char	*cmd_path;
 	int		i;
 
+	if (!access(cmd, F_OK | X_OK))
+		return (cmd);
 	paths = ft_split(envp_PATH, ':');
 	if (!paths)
 		return (0);
@@ -75,29 +77,14 @@ char	*get_cmd_path(char *cmd, char *envp_PATH)
 	return (NULL);
 }
 
-char	**get_paths(t_pipex pipex)
-{
-	char	**tab;
-	int		i;
+// char	*get_path(t_pipex pipex, int i)
+// {
+// 	char	*cmd_path;
+// 	int		i;
 
-	tab = malloc(sizeof(char *) * (pipex.cmd_nbr + 1));
-	if (!tab)
-		return (NULL);
-	i = 0;
-	while (i < pipex.cmd_nbr)
-	{
-		tab[i] = get_cmd_path(pipex.cmd[i], pipex.env_path);
-		if (!tab[i])
-		{
-			perror(pipex.cmd[i]);
-			free_double(tab);
-			return (NULL);
-		}
-		i++;
-	}
-	tab[i] = 0;
-	return (tab);
-}
+// 	cmd_path = get_cmd_path(pipex.cmd[i], pipex.env_path);
+// 	return (cmd_path);
+// }
 
 // void	print_test(t_pipex pipex)
 // {

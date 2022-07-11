@@ -6,7 +6,7 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/22 17:25:52 by rvrignon          #+#    #+#             */
-/*   Updated: 2022/07/11 19:40:42 by rvrignon         ###   ########.fr       */
+/*   Updated: 2022/07/11 20:35:49 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,6 @@ static int	main_util(t_pipex pipex, char **envp)
 		i++;
 	}
 	close_pipes(pipex);
-	close(pipex.infile_fd);
-	close(pipex.outfile_fd);
 	return (1);
 }
 
@@ -43,18 +41,10 @@ t_pipex	init(void)
 
 static int	finish(t_pipex pipex, int heredoc)
 {
-	int	i;
-	
-	i = 0;
 	if (pipex.infile_fd > 0)
 		close(pipex.infile_fd);
 	if (pipex.outfile_fd > 0)
 		close(pipex.outfile_fd);
-	while (i < pipex.pipe_nbr)
-	{
-		close(pipex.pfd[i]);
-		i++;
-	}
 	close(0);
 	close(1);
 	close(2);
@@ -74,6 +64,7 @@ int	main(int ac, char **av, char **envp)
 {
 	t_pipex	pipex;
 	int		heredoc;
+	int 	i;
 
 	if (!envp[0])
 		return (0);
@@ -90,6 +81,12 @@ int	main(int ac, char **av, char **envp)
 		return (finish(pipex, heredoc));
 	if (!main_util(pipex, envp))
 		return (finish(pipex, heredoc));
+	i = 0;
+	while (i < pipex.pipe_nbr)
+	{
+		close(pipex.pfd[i]);
+		i++;
+	}
 	waitpid(-1, NULL, 0);
 	return (finish(pipex, heredoc));
 }

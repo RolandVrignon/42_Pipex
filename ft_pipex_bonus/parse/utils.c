@@ -6,7 +6,7 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/23 16:21:48 by rvrignon          #+#    #+#             */
-/*   Updated: 2022/07/11 16:55:31 by rvrignon         ###   ########.fr       */
+/*   Updated: 2022/07/11 20:38:28 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ t_pipex	heredoc_stuff(int ac, char **av, int heredoc)
 			perror(av[1]);
 		return (err);
 	}
-	pipex.pipe_nbr = ac - (4 + heredoc);
 	return (pipex);
 }
 
@@ -71,14 +70,17 @@ t_pipex	set_pipex(int ac, char **av, char **envp, int heredoc)
 
 	err = 0;
 	pipex = heredoc_stuff(ac, av, heredoc);
+	if (pipex.infile_fd < 0)
+		err = 1;
 	pipex.env_path = get_envp(envp);
 	if (!pipex.env_path)
 		err = 1;
 	pipex.outfile_fd = handle_outfile(ac, av, heredoc);
-	if (pipex.infile_fd < 0 || pipex.outfile_fd < 0)
+	if (pipex.outfile_fd < 0)
 		err = 1;
 	pipex.opt = get_opt(ac - (3 + heredoc), av, (0 + heredoc));
 	pipex.cmd = get_cmd(ac - (3 + heredoc), av, (0 + heredoc));
+	pipex.pipe_nbr = ac - (4 + heredoc);
 	pipex.pfd = (int *)malloc(sizeof(int) * 2 * pipex.pipe_nbr);
 	if (!pipex.cmd || !pipex.opt || !pipex.pfd)
 		err = 1;

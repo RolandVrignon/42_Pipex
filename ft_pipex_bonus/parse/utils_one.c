@@ -6,7 +6,7 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/30 13:51:45 by rvrignon          #+#    #+#             */
-/*   Updated: 2022/07/11 19:53:58 by rvrignon         ###   ########.fr       */
+/*   Updated: 2022/07/11 23:00:33 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ char	*get_envp(char **envp)
 	i = 0;
 	if (!envp[0])
 		return (0);
-	while (envp[i++])
+	while (envp[i])
 	{
 		env_path = ft_strnstr(envp[i], "PATH=", 5);
 		if (env_path)
@@ -30,6 +30,8 @@ char	*get_envp(char **envp)
 				return (0);
 			return (env_path);
 		}
+		else
+			i++;
 	}
 	return (0);
 }
@@ -48,16 +50,16 @@ void	free_double(char **tab)
 	free(tab);
 }
 
-int	free_stuff(t_pipex pipex)
+int	free_stuff(t_pipex *pipex)
 {
-	if (pipex.env_path != 0)
-		free(pipex.env_path);
-	if (pipex.pfd != 0)
-		free(pipex.pfd);
-	if (pipex.cmd != 0)
-		free_double(pipex.cmd);
-	if (pipex.opt != 0)
-		free_double(pipex.opt);
+	if (pipex->env_path != 0)
+		free(pipex->env_path);
+	if (pipex->pfd != 0)
+		free(pipex->pfd);
+	if (pipex->cmd != 0)
+		free_double(pipex->cmd);
+	if (pipex->opt != 0)
+		free_double(pipex->opt);
 	return (1);
 }
 

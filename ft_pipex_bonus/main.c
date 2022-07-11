@@ -6,63 +6,68 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/22 17:25:52 by rvrignon          #+#    #+#             */
-/*   Updated: 2022/07/11 20:35:49 by rvrignon         ###   ########.fr       */
+/*   Updated: 2022/07/11 22:35:47 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-static int	main_util(t_pipex pipex, char **envp)
+t_pipex	*init(int heredoc)
+{
+	t_pipex	*pipex;
+
+	pipex = malloc(sizeof(t_pipex));
+	if (!pipex)
+		return (NULL);
+	pipex->env_path = 0;
+	pipex->pfd = 0;
+	pipex->cmd = 0;
+	pipex->opt = 0;
+	pipex->heredoc = heredoc;
+	return (pipex);
+}
+
+static t_pipex	*main_util(t_pipex *pipex, char **envp)
 {
 	int	i;
 
 	i = 0;
 	if (!create_pipes(pipex))
-		return (0);
-	while (i < pipex.cmd_nbr)
+		return (NULL);
+	while (i < pipex->cmd_nbr)
 	{
-		create_childs(pipex, i, envp);
+		pipex = create_childs(pipex, i, envp);
 		i++;
 	}
 	close_pipes(pipex);
-	return (1);
-}
-
-t_pipex	init(void)
-{
-	t_pipex	pipex;
-
-	pipex.env_path = 0;
-	pipex.pfd = 0;
-	pipex.cmd = 0;
-	pipex.opt = 0;
 	return (pipex);
 }
 
-static int	finish(t_pipex pipex, int heredoc)
+static int	finish(t_pipex *pipex, int heredoc)
 {
-	if (pipex.infile_fd > 0)
-		close(pipex.infile_fd);
-	if (pipex.outfile_fd > 0)
-		close(pipex.outfile_fd);
+	free_stuff(pipex);
+	if (pipex->infile_fd > 0)
+		close(pipex->infile_fd);
+	if (pipex->outfile_fd > 0)
+		close(pipex->outfile_fd);
 	close(0);
 	close(1);
 	close(2);
-	free_stuff(pipex);
 	if (heredoc)
 		unlink("tmp.txt");
+	free(pipex);
 	return (0);
 }
 
 static int	arg_err(void)
 {
-	ft_printf("Miss arguments to work\n");
+	ft_printf("Not enough arguments\n");
 	return (1);
 }
 
 int	main(int ac, char **av, char **envp)
 {
-	t_pipex	pipex;
+	t_pipex	*pipex;
 	int		heredoc;
 	int 	i;
 
@@ -70,21 +75,24 @@ int	main(int ac, char **av, char **envp)
 		return (0);
 	if (ac < 5)
 		return (arg_err());
-	pipex = init();
 	heredoc = ft_strncmp(av[1], "here_doc", ft_strlen(av[1]));
 	if (!heredoc)
 		heredoc = here_doc(av[2]);
 	else
 		heredoc = 0;
-	pipex = set_pipex(ac, av, envp, heredoc);
-	if (pipex.err)
+	pipex = init(heredoc);
+	if (!pipex)
 		return (finish(pipex, heredoc));
-	if (!main_util(pipex, envp))
+	pipex = set_pipex(ac, av, envp, pipex);
+	if (!pipex)
+		return (finish(pipex, heredoc));
+	pipex = main_util(pipex, envp);
+	if (!pipex)
 		return (finish(pipex, heredoc));
 	i = 0;
-	while (i < pipex.pipe_nbr)
+	while (i < pipex->pipe_nbr)
 	{
-		close(pipex.pfd[i]);
+		close(pipex->pfd[i]);
 		i++;
 	}
 	waitpid(-1, NULL, 0);

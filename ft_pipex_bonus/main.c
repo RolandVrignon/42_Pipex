@@ -6,7 +6,7 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/22 17:25:52 by rvrignon          #+#    #+#             */
-/*   Updated: 2022/07/11 22:35:47 by rvrignon         ###   ########.fr       */
+/*   Updated: 2022/07/11 23:16:37 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static t_pipex	*main_util(t_pipex *pipex, char **envp)
 		return (NULL);
 	while (i < pipex->cmd_nbr)
 	{
-		pipex = create_childs(pipex, i, envp);
+		create_childs(pipex, i, envp);
 		i++;
 	}
 	close_pipes(pipex);
@@ -50,6 +50,7 @@ static int	finish(t_pipex *pipex, int heredoc)
 		close(pipex->infile_fd);
 	if (pipex->outfile_fd > 0)
 		close(pipex->outfile_fd);
+	ft_printf("\n\nEverything closed\n\n");
 	close(0);
 	close(1);
 	close(2);
@@ -96,5 +97,7 @@ int	main(int ac, char **av, char **envp)
 		i++;
 	}
 	waitpid(-1, NULL, 0);
-	return (finish(pipex, heredoc));
+	ft_printf("\n\nEND\n\n");
+	finish(pipex, heredoc);
+	return (0);
 }

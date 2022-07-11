@@ -6,7 +6,7 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/30 15:50:01 by rvrignon          #+#    #+#             */
-/*   Updated: 2022/07/11 21:31:23 by rvrignon         ###   ########.fr       */
+/*   Updated: 2022/07/11 23:10:31 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ static void	msg_pipe(char *arg)
 	write(2, "\n", 1);
 }
 
-t_pipex	*create_childs(t_pipex *pipex, int i, char **envp)
+void create_childs(t_pipex *pipex, int i, char **envp)
 {
 	char	*opt[3];
 
@@ -78,9 +78,8 @@ t_pipex	*create_childs(t_pipex *pipex, int i, char **envp)
 		{
 			msg_pipe(pipex->cmd[i]);
 			free(pipex->cpath);
-			exit (1);
+			exit(1);
 		}
 		execve(pipex->cpath, opt, envp);
 	}
-	return (pipex);
 }

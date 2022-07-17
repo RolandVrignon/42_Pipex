@@ -6,20 +6,20 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/04 20:26:19 by rvrignon          #+#    #+#             */
-/*   Updated: 2022/06/30 18:09:04 by rvrignon         ###   ########.fr       */
+/*   Updated: 2022/07/17 22:59:45 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-size_t	gnl_strlen(const char *s)
+char	*return_value(char *buffer, char *line, char *limiter, char *stash)
 {
-	size_t	i;
-
-	i = 0;
-	if (!s)
-		return (0);
-	while (s[i])
-		i++;
-	return (i);
+	free(buffer);
+	if (ft_strncmp(line, limiter, ft_strlen(line) - 1) == 0)
+	{
+		free(stash);
+		free(line);
+		return (NULL);
+	}
+	return (line);
 }

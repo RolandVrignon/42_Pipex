@@ -6,11 +6,12 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/04 20:26:04 by rvrignon          #+#    #+#             */
-/*   Updated: 2022/07/05 09:55:36 by rvrignon         ###   ########.fr       */
+/*   Updated: 2022/07/17 23:02:33 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <stdio.h>
 
 static char	*ft_strjoin_gnl(char *s1, const char *s2)
 {
@@ -110,20 +111,21 @@ static char	*handle_stash(char *stash)
 	return (tmp);
 }
 
-char	*get_next_line(int fd)
+char	*get_next_line(int fd, char *limiter)
 {
 	static char		*stash[1050];
 	char			*buffer;
-	char			*line;
 	size_t			status;
+	char			*line;
 
 	buffer = malloc(sizeof(char) * (BUFFER_SIZE + 1));
-	status = 1;
 	if (!buffer)
 		return (NULL);
+	status = 1;
 	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, buffer, 0) < 0)
 	{
 		free(buffer);
+		free(stash[fd]);
 		return (NULL);
 	}
 	while (status && get_status(stash[fd]))
@@ -134,6 +136,5 @@ char	*get_next_line(int fd)
 	}
 	line = handle_line(stash[fd]);
 	stash[fd] = handle_stash(stash[fd]);
-	free(buffer);
-	return (line);
+	return (return_value(buffer, line, limiter, stash[fd]));
 }

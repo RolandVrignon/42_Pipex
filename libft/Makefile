@@ -1,10 +1,18 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2022/07/17 23:22:44 by rvrignon          #+#    #+#              #
+#    Updated: 2022/07/17 23:22:49 by rvrignon         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
 NAME = libft.a
 
-CC = gcc
-
-CFLAGS = -Wall -Wextra -Werror
-
-SRC =  	ft_atoi.c \
+SRCS =  ft_atoi.c \
 		ft_bzero.c \
 		ft_calloc.c \
 		ft_isalpha.c \
@@ -51,28 +59,38 @@ SRC =  	ft_atoi.c \
 		printf_utils_one.c \
 		printf_utils_two.c \
 		printf_utils_three.c \
-		get_next_line_utils.c \
 		get_next_line.c \
-				
+		get_next_line_utils.c \
 
-BONUS_OBJ = $(BONUS_SRC:.c=.o)
+OBJS 	= ${SRCS:.c=.o}
 
-OBJ = $(SRC:.c=.o)
+SRCS_B	= 	ft_lstnew.c ft_lstadd_front.c ft_lstsize.c ft_lstlast.c\
+			ft_lstadd_back.c ft_lstdelone.c ft_lstclear.c ft_lstiter.c ft_lstmap.c
 
-all: $(NAME)
+OBJS_B	= ${SRCS_B:.c=.o}
 
-$(NAME): $(OBJ)
-	ar rc $(NAME) $^
-	ranlib $(NAME)
+HEADER	= ./
 
-bonus : $(BONUS_OBJ)
-	ar rc $(NAME) $^
-	ranlib $(NAME)
+CC 		= gcc
+CFLAGS 	= -Wall -Wextra -Werror
+
+.c.o:		%.o : %.c
+					@${CC} ${CFLAGS} -I ${HEADER} -c $< -o $(<:.c=.o)
+
+$(NAME):	${OBJS}
+					@ar rc ${NAME} ${OBJS}
+
+all: 		${NAME}
+
+bonus:		${OBJS} ${OBJS_B}
+					@ar rc ${NAME} ${OBJS} ${OBJS_B}
 
 clean:
-	rm -f $(OBJ) $(BONUS_OBJ)
+					@rm -f ${OBJS} ${OBJS_B}
 
-fclean: clean
-	rm -f $(NAME)
+fclean: 	clean
+					@rm -f $(NAME)
 
-re: fclean all
+re:			fclean all
+
+.PHONY: all clean fclean re bonus

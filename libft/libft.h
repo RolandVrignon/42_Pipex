@@ -6,7 +6,7 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/29 18:12:32 by rvrignon          #+#    #+#             */
-/*   Updated: 2022/07/05 09:55:11 by rvrignon         ###   ########.fr       */
+/*   Updated: 2022/07/17 23:02:11 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 
 # define HEXALOWER		"0123456789abcdef"
 # define HEXAUPPER		"0123456789ABCDEF"
-# define BUFFER_SIZE	20
+# define BUFFER_SIZE	10
 
 typedef struct s_list
 {
@@ -120,11 +120,14 @@ void		ft_lstiter(t_list *lst, void (*f)(void *));
 
 t_list		*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
 
+// --------------------------------------------------------------------------
+// --------------------------------------------------------------------------
+
 // Printf
 
 int			ft_printf(const char *format, ...);
 
-// Printf - Flags
+// Printf // Flags
 
 size_t		ft_flag_c(int c);
 
@@ -142,7 +145,7 @@ size_t		ft_flag_uppercase_x(unsigned int nb);
 
 size_t		ft_flag_pourcent(void);
 
-// Printf - Utils
+// Printf // Utils
 
 char		*ft_putnbr_base(unsigned int nbr, char *base, int j, char *r);
 
@@ -156,10 +159,10 @@ char		*process_unsigned(int j, int len, char *str, unsigned int n);
 
 char		*itoa_unsigned(unsigned int n);
 
-// Get Next line
+// Gnl
 
-char		*get_next_line(int fd);
+char		*return_value(char *buffer, char *line, char *limiter, char *stash);
 
-size_t		gnl_strlen(const char *s);
+char		*get_next_line(int fd, char *limiter);
 
 #endif

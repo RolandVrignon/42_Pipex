@@ -6,7 +6,7 @@
 #    By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/22 17:24:14 by rvrignon          #+#    #+#              #
-#    Updated: 2022/07/17 23:33:50 by rvrignon         ###   ########.fr        #
+#    Updated: 2022/07/18 01:46:24 by rvrignon         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,6 @@ NAME	=	ft_pipex/pipex.a
 NAMEB	=	ft_pipex_bonus/pipex.a
 
 PROG	=	pipex
-PROGB	=	pipex
 
 all:		$(NAME)
 
@@ -46,7 +45,7 @@ $(NAMEB):	$(OBJB)
 			@make re -C libft
 			@cp libft/libft.a $(NAMEB)
 			@ar rcs $(NAMEB) $(OBJB)
-			@$(CC) $(CFLAGS) -o $(PROGB) $(SRCB) $(NAMEB)
+			@$(CC) $(CFLAGS) -o $(PROG) $(SRCB) $(NAMEB)
 			@echo "\033[1;32m"
 			@echo "\033[4;36mPIPEEEEX Bonus"
 			@echo "\033[4;32mGOOD WORK\033[0m"
@@ -63,12 +62,12 @@ clean:
 fclean:		clean
 			$(MAKE) fclean -C ./libft
 			$(RM) $(PROG)
-			$(RM) $(PROGB)
 			$(RM) *.txt
 			@echo "\033[1;32m"
 			@echo "\033[4;36mPipex is now fcleaned!\033[0m"
 			@echo "\033[4;32mGOOD WORK\033[0m"
 			clear
+
 
 re:			fclean $(NAME)
 

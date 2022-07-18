@@ -6,11 +6,17 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/17 19:25:54 by rvrignon          #+#    #+#             */
-/*   Updated: 2022/07/17 23:09:18 by rvrignon         ###   ########.fr       */
+/*   Updated: 2022/07/18 14:24:28 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./pipex.h"
+
+void	error(void)
+{
+	ft_putstr_fd("Error\n", 2);
+	exit(EXIT_FAILURE);
+}
 
 void	usage(void)
 {
@@ -29,8 +35,10 @@ int	open_file(char *av, int i)
 		file = open(av, O_WRONLY | O_CREAT | O_TRUNC, 0777);
 	else if (i == 2)
 		file = open(av, O_RDONLY, 0777);
-	if (file == -1)
-		error();
+	if (file < 0)
+		perror(av);
+	if (file < 0 && i != 2)
+		exit(EXIT_FAILURE);
 	return (file);
 }
 
@@ -50,15 +58,15 @@ void	execute(char *av, char **envp)
 	if (!path)
 	{
 		err = ft_strjoin(cmd[0], ": Command not found\n");
-		ft_putstr_fd(err, 2);
+		ft_putstr_fd(err, STDERR_FILENO);
 		free(err);
 		while (cmd[++i])
 			free(cmd[i]);
 		free(cmd);
-		exit(EXIT_FAILURE);
+		return ;
 	}
 	if (execve(path, cmd, envp) == -1)
-		exit(EXIT_FAILURE);
+		return ;
 }
 
 char	*find_path(char *cmd, char **envp)

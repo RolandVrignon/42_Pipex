@@ -6,7 +6,7 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/17 19:26:14 by rvrignon          #+#    #+#             */
-/*   Updated: 2022/07/18 00:54:03 by rvrignon         ###   ########.fr       */
+/*   Updated: 2022/07/18 14:24:44 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,10 @@
 # include <fcntl.h>
 # include "../libft/libft.h"
 
-void	error(void);
 char	*find_path(char *cmd, char **envp);
 void	execute(char *argv, char **envp);
-
 int		open_file(char *argv, int i);
 void	usage(void);
+void	error(void);
 
 #endif

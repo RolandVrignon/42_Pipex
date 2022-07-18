@@ -6,7 +6,7 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/17 19:25:10 by rvrignon          #+#    #+#             */
-/*   Updated: 2022/07/18 01:13:41 by rvrignon         ###   ########.fr       */
+/*   Updated: 2022/07/18 13:49:02 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ int	main(int ac, char **av, char **envp)
 			exit(EXIT_FAILURE);
 		}
 		pid1 = fork();
-		if (pid1 == -1)
+		if (pid1 < 0)
 		{
 			ft_putstr_fd("Error\n", 2);
 			exit(EXIT_FAILURE);

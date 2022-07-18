@@ -6,11 +6,20 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/17 19:25:43 by rvrignon          #+#    #+#             */
-/*   Updated: 2022/07/17 23:36:28 by rvrignon         ###   ########.fr       */
+/*   Updated: 2022/07/18 14:24:54 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./pipex.h"
+
+static void	close_pipes(int *fd)
+{
+	close(fd[0]);
+	close(fd[1]);
+	close(0);
+	close(1);
+	close(2);
+}
 
 void	child_process(char *av, char **envp)
 {
@@ -18,7 +27,7 @@ void	child_process(char *av, char **envp)
 	int		fd[2];
 
 	if (pipe(fd) == -1)
-		error();
+		close_pipes(fd);
 	pid = fork();
 	if (pid == -1)
 		error();

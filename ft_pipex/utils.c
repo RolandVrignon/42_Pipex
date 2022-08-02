@@ -6,23 +6,49 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/17 19:25:17 by rvrignon          #+#    #+#             */
-/*   Updated: 2022/07/18 01:13:47 by rvrignon         ###   ########.fr       */
+/*   Updated: 2022/08/02 16:56:28 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./pipex.h"
 
-char	*find_path(char *cmd, char **envp)
+void	free_double(char **tab)
+{
+	int	i;
+
+	i = 0;
+	while (tab[i])
+	{
+		free(tab[i]);
+		i++;
+	}
+	free(tab);
+}
+
+char	**find_path(char **envp)
+{
+	int		i;
+	char	**paths;
+
+	if (!envp[0])
+		return (NULL);
+	i = 0;
+	while (envp[i + 1] && ft_strnstr(envp[i], "PATH", 4) == 0)
+		i++;
+	if (ft_strnstr(envp[i], "PATH", 4) == 0)
+		return (NULL);
+	paths = ft_split(envp[i] + 5, ':');
+	return (paths);
+}
+
+char	*find_cmdpath(char *cmd, char **envp)
 {
 	char	**paths;
 	char	*path;
 	int		i;
 	char	*part_path;
 
-	i = 0;
-	while (ft_strnstr(envp[i], "PATH", 4) == 0)
-		i++;
-	paths = ft_split(envp[i] + 5, ':');
+	paths = find_path(envp);
 	i = 0;
 	while (paths[i])
 	{
@@ -35,9 +61,7 @@ char	*find_path(char *cmd, char **envp)
 		i++;
 	}
 	i = -1;
-	while (paths[++i])
-		free(paths[i]);
-	free(paths);
+	free_double(paths);
 	return (0);
 }
 
@@ -53,7 +77,7 @@ void	execute(char *av, char **envp, int *fd)
 	if (access(cmd[0], F_OK) == 0)
 		path = cmd[0];
 	else
-		path = find_path(cmd[0], envp);
+		path = find_cmdpath(cmd[0], envp);
 	if (!path)
 	{
 		err = ft_strjoin(cmd[0], ": Command not found\n");

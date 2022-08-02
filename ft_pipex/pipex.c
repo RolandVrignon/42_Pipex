@@ -6,7 +6,7 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/17 19:25:10 by rvrignon          #+#    #+#             */
-/*   Updated: 2022/07/18 13:49:02 by rvrignon         ###   ########.fr       */
+/*   Updated: 2022/08/02 16:58:06 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	close_pipes(int *fd)
 
 void	child_process(char **av, char **envp, int *fd)
 {
-	int		filein;
+	int	filein;
 
 	filein = open(av[1], O_RDONLY, 0777);
 	if (filein == -1)
@@ -40,7 +40,7 @@ void	child_process(char **av, char **envp, int *fd)
 
 void	parent_process(char **av, char **envp, int *fd)
 {
-	int		fileout;
+	int	fileout;
 
 	fileout = open(av[4], O_WRONLY | O_CREAT | O_TRUNC, 0777);
 	if (fileout == -1)
@@ -54,30 +54,43 @@ void	parent_process(char **av, char **envp, int *fd)
 	execute(av[3], envp, fd);
 }
 
+void	process(char **av, char **envp)
+{
+	pid_t	pid1;
+	int		fd[2];
+
+	if (pipe(fd) == -1)
+	{
+		ft_putstr_fd("Error\n", 2);
+		close_pipes(fd);
+		exit(EXIT_FAILURE);
+	}
+	pid1 = fork();
+	if (pid1 < 0)
+	{
+		ft_putstr_fd("Error\n", 2);
+		exit(EXIT_FAILURE);
+	}
+	if (pid1 == 0)
+		child_process(av, envp, fd);
+	waitpid(pid1, NULL, 0);
+	parent_process(av, envp, fd);
+}
+
 int	main(int ac, char **av, char **envp)
 {
-	int		fd[2];
-	pid_t	pid1;
+	char	**paths;
 
-	if (ac == 5)
-	{
-		if (pipe(fd) == -1)
-		{
-			ft_putstr_fd("Error\n", 2);
-			close_pipes(fd);
-			exit(EXIT_FAILURE);
-		}
-		pid1 = fork();
-		if (pid1 < 0)
-		{
-			ft_putstr_fd("Error\n", 2);
-			exit(EXIT_FAILURE);
-		}
-		if (pid1 == 0)
-			child_process(av, envp, fd);
-		waitpid(pid1, NULL, 0);
-		parent_process(av, envp, fd);
+	paths = find_path(envp);
+	if (!paths)
+	{	
+		ft_printf("Env error\n");
+		return (0);
 	}
+	else
+		free_double(paths);
+	if (ac == 5)
+		process(av, envp);
 	else
 		ft_putstr_fd("Too few or too many arguments\n", 2);
 	return (0);

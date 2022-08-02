@@ -6,18 +6,16 @@
 #    By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/22 17:24:14 by rvrignon          #+#    #+#              #
-#    Updated: 2022/08/02 17:36:39 by rvrignon         ###   ########.fr        #
+#    Updated: 2022/08/02 17:52:46 by rvrignon         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 SRC =  	ft_pipex/pipex.c \
-		ft_pipex/utils.c \
-		ft_pipex/pipex.h
-
+		ft_pipex/utils.c 
 OBJ		=	$(SRC:.c=.o)
 CC		=	gcc
 RM		=	rm -f
-CFLAGS	=	-Wall -Werror -Wextra -g -MMD
+CFLAGS	=	-Wall -Werror -Wextra -g
 
 NAME	=	ft_pipex/pipex.a
 

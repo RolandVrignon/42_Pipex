@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   pipex.h                                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/07/17 19:26:05 by rvrignon          #+#    #+#             */
-/*   Updated: 2022/08/02 16:42:01 by rvrignon         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #ifndef PIPEX_H
 # define PIPEX_H
 
@@ -21,10 +9,21 @@
 # include <fcntl.h>
 # include "../libft/libft.h"
 
-char	**find_path(char **envp);
-void	free_double(char **tab);
-char	*find_cmdpath(char *cmd, char **envp);
-void	execute(char *argv, char **envp, int *fd);
+
 void	close_pipes(int *fd);
+
+void	child_process(char **av, char **envp, int *fd);
+
+void	parent_process(char **av, char **envp, int *fd);
+
+void	process(char **av, char **envp);
+
+void	free_double(char **tab);
+
+char	**find_path(char **envp);
+
+char	*find_cmdpath(char *cmd, char **envp);
+
+void	execute(char *av, char **envp, int *fd);
 
 #endif

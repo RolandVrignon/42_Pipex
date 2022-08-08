@@ -6,7 +6,7 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/17 19:25:10 by rvrignon          #+#    #+#             */
-/*   Updated: 2022/08/08 14:12:35 by rvrignon         ###   ########.fr       */
+/*   Updated: 2022/08/08 14:18:08 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ void	close_pipes(int *fd)
 {
 	close(fd[0]);
 	close(fd[1]);
-
 }
 
 void	child_process(char **av, char **envp, int *fd)

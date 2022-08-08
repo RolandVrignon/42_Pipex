@@ -6,7 +6,7 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/17 19:25:10 by rvrignon          #+#    #+#             */
-/*   Updated: 2022/08/08 13:16:15 by rvrignon         ###   ########.fr       */
+/*   Updated: 2022/08/08 13:19:22 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,9 @@ void	close_pipes(int *fd)
 {
 	close(fd[0]);
 	close(fd[1]);
+	close(0);
+	close(1);
+	close(2);
 }
 
 void	child_process(char **av, char **envp, int *fd)
@@ -54,27 +57,27 @@ void	parent_process(char **av, char **envp, int *fd)
 
 void	process(char **av, char **envp, int fd[2])
 {
-	pid_t	pid1;
+	pid_t	pid;
 
-	pid1 = fork();
-	if (pid1 < 0)
+	pid = fork();
+	if (pid < 0)
 	{
 		ft_putstr_fd("Error\n", 2);
 		exit(EXIT_FAILURE);
 	}
-	if (pid1 == 0)
+	if (pid == 0)
 		child_process(av, envp, fd);
-	if (pid1 > 0)
+	if (pid > 0)
 	{
-		pid1 = fork();
-		if (pid1 < 0)
+		pid = fork();
+		if (pid < 0)
 		{
 			ft_putstr_fd("Error\n", 2);
 			exit(EXIT_FAILURE);
 		}
-		if (pid1 == 0)
+		if (pid == 0)
 			parent_process(av, envp, fd);
-		if (pid1 > 0)
+		if (pid > 0)
 			wait(0);
 	}
 }

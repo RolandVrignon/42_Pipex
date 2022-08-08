@@ -6,7 +6,7 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/17 19:25:10 by rvrignon          #+#    #+#             */
-/*   Updated: 2022/08/02 16:58:06 by rvrignon         ###   ########.fr       */
+/*   Updated: 2022/08/08 13:16:15 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,6 @@ void	close_pipes(int *fd)
 {
 	close(fd[0]);
 	close(fd[1]);
-	close(0);
-	close(1);
-	close(2);
 }
 
 void	child_process(char **av, char **envp, int *fd)
@@ -46,6 +43,7 @@ void	parent_process(char **av, char **envp, int *fd)
 	if (fileout == -1)
 	{
 		perror(av[4]);
+		close_pipes(fd);
 		exit(EXIT_FAILURE);
 	}
 	dup2(fd[0], STDIN_FILENO);
@@ -54,17 +52,10 @@ void	parent_process(char **av, char **envp, int *fd)
 	execute(av[3], envp, fd);
 }
 
-void	process(char **av, char **envp)
+void	process(char **av, char **envp, int fd[2])
 {
 	pid_t	pid1;
-	int		fd[2];
 
-	if (pipe(fd) == -1)
-	{
-		ft_putstr_fd("Error\n", 2);
-		close_pipes(fd);
-		exit(EXIT_FAILURE);
-	}
 	pid1 = fork();
 	if (pid1 < 0)
 	{
@@ -73,13 +64,25 @@ void	process(char **av, char **envp)
 	}
 	if (pid1 == 0)
 		child_process(av, envp, fd);
-	waitpid(pid1, NULL, 0);
-	parent_process(av, envp, fd);
+	if (pid1 > 0)
+	{
+		pid1 = fork();
+		if (pid1 < 0)
+		{
+			ft_putstr_fd("Error\n", 2);
+			exit(EXIT_FAILURE);
+		}
+		if (pid1 == 0)
+			parent_process(av, envp, fd);
+		if (pid1 > 0)
+			wait(0);
+	}
 }
 
 int	main(int ac, char **av, char **envp)
 {
 	char	**paths;
+	int		fd[2];
 
 	paths = find_path(envp);
 	if (!paths)
@@ -90,7 +93,15 @@ int	main(int ac, char **av, char **envp)
 	else
 		free_double(paths);
 	if (ac == 5)
-		process(av, envp);
+	{
+		if (pipe(fd) == -1)
+		{
+			ft_putstr_fd("Error\n", 2);
+			close_pipes(fd);
+			exit(EXIT_FAILURE);
+		}
+		process(av, envp, fd);
+	}
 	else
 		ft_putstr_fd("Too few or too many arguments\n", 2);
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/17 19:25:17 by rvrignon          #+#    #+#             */
-/*   Updated: 2022/08/07 14:06:10 by rvrignon         ###   ########.fr       */
+/*   Updated: 2022/08/07 14:26:49 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,25 +91,4 @@ void	execute(char *av, char **envp, int *fd)
 	}
 	if (execve(path, cmd, envp) == -1)
 		exit(EXIT_FAILURE);
-}
-
-void fork_element(char **av, char **envp, int i, int *fd)
-{
-	pid_t pid;
-	
-	pid = fork();
-	if (pid < 0)
-	{
-		ft_putstr_fd("Error\n", 2);
-		exit(EXIT_FAILURE);
-	}
-	if (pid == 0)
-	{
-		if (i == 0)
-			child_process(av, envp, fd);
-		else if (i == 1)
-			parent_process(av, envp, fd);
-	}
-	wait(0);
-	return ;
 }

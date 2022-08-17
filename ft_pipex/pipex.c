@@ -6,7 +6,7 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/17 19:25:10 by rvrignon          #+#    #+#             */
-/*   Updated: 2022/08/08 14:18:08 by rvrignon         ###   ########.fr       */
+/*   Updated: 2022/08/18 01:50:58 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	close_pipes(int *fd)
 	close(fd[1]);
 }
 
-void	child_process(char **av, char **envp, int *fd)
+void	first_child(char **av, char **envp, int *fd)
 {
 	int	filein;
 
@@ -29,13 +29,13 @@ void	child_process(char **av, char **envp, int *fd)
 		close_pipes(fd);
 		exit(EXIT_FAILURE);
 	}
-	dup2(fd[1], STDOUT_FILENO);
 	dup2(filein, STDIN_FILENO);
+	dup2(fd[1], STDOUT_FILENO);
 	close(fd[0]);
 	execute(av[2], envp, fd);
 }
 
-void	parent_process(char **av, char **envp, int *fd)
+void	second_child(char **av, char **envp, int *fd)
 {
 	int	fileout;
 
@@ -63,7 +63,7 @@ void	process(char **av, char **envp, int fd[2])
 		exit(EXIT_FAILURE);
 	}
 	if (pid == 0)
-		child_process(av, envp, fd);
+		first_child(av, envp, fd);
 	if (pid > 0)
 	{
 		pid = fork();
@@ -73,8 +73,8 @@ void	process(char **av, char **envp, int fd[2])
 			exit(EXIT_FAILURE);
 		}
 		if (pid == 0)
-			parent_process(av, envp, fd);
-		wait(0);
+			second_child(av, envp, fd);
+		
 	}
 }
 

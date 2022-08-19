@@ -6,7 +6,7 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/17 19:25:10 by rvrignon          #+#    #+#             */
-/*   Updated: 2022/08/18 01:50:58 by rvrignon         ###   ########.fr       */
+/*   Updated: 2022/08/18 02:08:47 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void	process(char **av, char **envp, int fd[2])
 		}
 		if (pid == 0)
 			second_child(av, envp, fd);
-		
+		wait(0);
 	}
 }
 

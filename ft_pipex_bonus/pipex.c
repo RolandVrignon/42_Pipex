@@ -6,7 +6,7 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/17 19:25:10 by rvrignon          #+#    #+#             */
-/*   Updated: 2022/08/18 01:51:13 by rvrignon         ###   ########.fr       */
+/*   Updated: 2022/08/19 12:26:01 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,27 @@ void	first_cmd(t_pipex *pipex)
 	{
 		perror(pipex->av[1]);
 		close_pipes(pipex->fd);
-		exit(EXIT_FAILURE);
+		return ;
 	}
 	dup2(filein, STDIN_FILENO);
 	dup2(pipex->fd[1], STDOUT_FILENO);
+	close(pipex->fd[0]);
+}
+
+void	last_cmd(t_pipex *pipex)
+{
+	int fileout;
+
+	fileout = open(pipex->av[pipex->ac - 1], O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	if (fileout == -1)
+	{
+		perror(pipex->av[pipex->ac - 1]);
+		close_pipes(pipex->fd);
+		exit(EXIT_FAILURE);
+	}
+	dup2(pipex->oldfd, STDIN_FILENO);
+	dup2(fileout, STDOUT_FILENO);
+	close(pipex->fd[1]);
 }
 
 void	handle_fd(t_pipex *pipex)
@@ -37,24 +54,8 @@ void	handle_fd(t_pipex *pipex)
 	{
 		dup2(pipex->oldfd, STDIN_FILENO);
 		dup2(pipex->fd[1], STDOUT_FILENO);
+		close(pipex->fd[0]);
 	}
-}
-
-void	last_cmd(t_pipex *pipex)
-{
-	int fileout;
-
-	fileout = open(pipex->av[pipex->ac - 1], O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	if (fileout == -1)
-	{
-		perror(pipex->av[pipex->ac]);
-		close_pipes(pipex->fd);
-		exit(EXIT_FAILURE);
-	}
-	dup2(pipex->oldfd, STDIN_FILENO);
-	dup2(pipex->fd[0], pipex->oldfd);
-	dup2(fileout, STDOUT_FILENO);
-	close(pipex->fd[1]);
 }
 
 void	child_process(t_pipex *pipex)
@@ -74,7 +75,7 @@ void	process(t_pipex *pipex)
 			error();
 		if (pipex->pid == 0)
 			child_process(pipex);
-		if (pipex->pid > 0)
+		if (pipex->pid > 0 && pipex->i < pipex->ac)
 		{
 			close(pipex->fd[1]);
 			if (pipex->oldfd > 0)
@@ -82,8 +83,8 @@ void	process(t_pipex *pipex)
 			pipex->oldfd = pipex->fd[0];
 			pipex->i++;
 			process(pipex);
-			wait(0);
 		}
+		wait(0);
 	}
 }
 
@@ -94,7 +95,7 @@ int	main(int ac, char **av, char **envp)
 	if (!check_path(envp))
 		return (0);
 	pipex = set_pipex(ac, av, envp);
-	if (ac >= 3)
+	if (ac >= 5)
 		process(pipex);
 	else
 		ft_putstr_fd("Too few or too many arguments\n", 2);

@@ -6,7 +6,7 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/17 19:25:17 by rvrignon          #+#    #+#             */
-/*   Updated: 2022/08/18 01:07:49 by rvrignon         ###   ########.fr       */
+/*   Updated: 2022/08/18 02:10:44 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,7 +133,6 @@ t_pipex	*set_pipex(int ac, char **av, char **envp)
 
 void	close_pipes(int fd[2])
 {
-	dprintf(2, "%d and %d closed\n", fd[0], fd[1]);
 	close(fd[0]);
 	close(fd[1]);
 }

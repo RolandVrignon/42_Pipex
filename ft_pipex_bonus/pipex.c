@@ -6,7 +6,7 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/17 19:25:10 by rvrignon          #+#    #+#             */
-/*   Updated: 2022/08/20 12:47:58 by rvrignon         ###   ########.fr       */
+/*   Updated: 2022/08/20 12:49:00 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,10 @@ int	last_cmd(t_pipex *pipex)
 {
 	int fileout;
 
-	fileout = open(pipex->av[pipex->ac - 1], O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	if (pipex->heredoc)
+		fileout = open(pipex->av[pipex->ac - 1], O_WRONLY | O_CREAT | O_APPEND, 0644);
+	else
+		fileout = open(pipex->av[pipex->ac - 1], O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (fileout == -1)
 	{
 		perror(pipex->av[pipex->ac - 1]);

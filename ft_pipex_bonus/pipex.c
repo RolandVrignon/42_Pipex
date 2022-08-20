@@ -6,7 +6,7 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/17 19:25:10 by rvrignon          #+#    #+#             */
-/*   Updated: 2022/08/20 16:29:57 by rvrignon         ###   ########.fr       */
+/*   Updated: 2022/08/20 17:01:16 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,11 +46,11 @@ void	process(t_pipex *pipex)
 
 static int	usage(void)
 {
-	ft_putstr_fd("Error : Too few or too many arguments\n\n", 2);
-	ft_putstr_fd("Multiple pipe example :\n", 2);
+	ft_putstr_fd("Error : Too few arguments\n\n", 2);
+	ft_putstr_fd("Multiple pipe example (min arg required 5) :\n", 2);
 	ft_putstr_fd(">$ < infile cmd1 | cmd2 | cmd3 > outfile\n", 2);
 	ft_putstr_fd(">$ ./pipex infile cmd1 cmd2 cmd3 outfile\n\n", 2);
-	ft_putstr_fd("Heredoc example :\n", 2);
+	ft_putstr_fd("Heredoc example (min arg required 6) :\n", 2);
 	ft_putstr_fd(">$ cm1 << limiter | cmd2 | cmd3 >> outfile\n", 2);
 	ft_putstr_fd(">$ ./pipex here_doc limiter cmd1 cmd2 cmd3 outfile\n\n", 2);
 	return (0);
@@ -62,7 +62,8 @@ int	main(int ac, char **av, char **envp)
 
 	if (!check_path(envp))
 		return (0);
-	if (ac < 5)
+	if ((ft_strncmp(av[1], "here_doc", ft_strlen(av[1])) == 0 && ac < 6)
+		|| (ft_strncmp(av[1], "here_doc", ft_strlen(av[1])) != 0 && ac < 5))
 		return (usage());
 	pipex = set_pipex(ac, av, envp);
 	process(pipex);

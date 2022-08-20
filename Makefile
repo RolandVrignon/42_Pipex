@@ -6,7 +6,7 @@
 #    By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/22 17:24:14 by rvrignon          #+#    #+#              #
-#    Updated: 2022/08/20 16:07:43 by rvrignon         ###   ########.fr        #
+#    Updated: 2022/08/20 16:35:45 by rvrignon         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -58,7 +58,6 @@ clean:
 			@echo "\033[1;32m"
 			@echo "\033[4;36mPipex is now clean!\033[0m"
 			@echo "\033[4;32mGOOD WORK\033[0m"
-			clear
 
 fclean:		clean
 			$(MAKE) fclean -C ./libft
@@ -67,7 +66,6 @@ fclean:		clean
 			@echo "\033[1;32m"
 			@echo "\033[4;36mPipex is now fcleaned!\033[0m"
 			@echo "\033[4;32mGOOD WORK\033[0m"
-			clear
 
 
 re:			fclean $(NAME)

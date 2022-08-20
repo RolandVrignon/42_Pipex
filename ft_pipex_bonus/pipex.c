@@ -6,7 +6,7 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/17 19:25:10 by rvrignon          #+#    #+#             */
-/*   Updated: 2022/08/20 12:41:10 by rvrignon         ###   ########.fr       */
+/*   Updated: 2022/08/20 12:42:53 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	first_cmd(t_pipex *pipex)
 {
-	int filein;
+	int filein; 
 
 	filein = open(pipex->av[1], O_RDONLY);
 	if (filein == -1)

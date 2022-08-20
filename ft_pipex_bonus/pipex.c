@@ -6,7 +6,7 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/17 19:25:10 by rvrignon          #+#    #+#             */
-/*   Updated: 2022/08/20 12:42:53 by rvrignon         ###   ########.fr       */
+/*   Updated: 2022/08/20 12:47:58 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,9 @@ void	process(t_pipex *pipex)
 		if (pipex->pid == 0)
 			child_process(pipex);
 		if (pipex->pid > 0 && pipex->i < pipex->ac)
-		{
+		{	
+			if (pipex->heredoc && pipex->i == 2)
+				wait(0);
 			close(pipex->fd[1]);
 			if (pipex->oldfd > 0)
 				close(pipex->oldfd);

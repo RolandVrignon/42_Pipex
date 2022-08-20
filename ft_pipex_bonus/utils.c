@@ -6,7 +6,7 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/17 19:25:17 by rvrignon          #+#    #+#             */
-/*   Updated: 2022/08/20 16:12:12 by rvrignon         ###   ########.fr       */
+/*   Updated: 2022/08/20 16:14:40 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ char	*find_cmdpath(char *cmd, char **envp)
 	return (0);
 }
 
-void	execute(char *av, char **envp)
+void	execute(char *av, char **envp, int *fd)
 {
 	char	**cmd;
 	int		i;
@@ -105,6 +105,7 @@ void	execute(char *av, char **envp)
 		while (cmd[++i])
 			free(cmd[i]);
 		free(cmd);
+		close_pipes(fd);
 		exit(EXIT_FAILURE);
 	}
 	if (execve(path, cmd, envp) == -1)

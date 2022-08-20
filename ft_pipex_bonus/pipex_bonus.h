@@ -6,7 +6,7 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/07 14:25:22 by rvrignon          #+#    #+#             */
-/*   Updated: 2022/08/20 16:10:13 by rvrignon         ###   ########.fr       */
+/*   Updated: 2022/08/20 16:14:52 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,6 @@ void	child_process(t_pipex *pipe);
 
 int		handle_fd(t_pipex *pipex);
 
-void	parent_process(char **av, char **envp, int *fd);
-
 void	process(t_pipex *pipe);
 
 int		check_path(char **envp);
@@ -50,7 +48,7 @@ char	**find_path(char **envp);
 
 char	*find_cmdpath(char *cmd, char **envp);
 
-void	execute(char *av, char **envp);
+void	execute(char *av, char **envp, int *fd);
 
 void	close_pipes(int fd[2]);
 

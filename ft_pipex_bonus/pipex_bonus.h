@@ -6,12 +6,12 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/07 14:25:22 by rvrignon          #+#    #+#             */
-/*   Updated: 2022/08/20 11:57:35 by rvrignon         ###   ########.fr       */
+/*   Updated: 2022/08/20 16:10:13 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PIPEX_H
-# define PIPEX_H
+#ifndef PIPEX_BONUS_H
+# define PIPEX_BONUS_H
 
 # include <stdlib.h>
 # include <unistd.h>
@@ -22,25 +22,25 @@
 # include "../libft/libft.h"
 
 typedef struct s_pipex{
-    int     ac;
-    char    **av;
-    char    **envp;
-    int     i;
-    pid_t   pid;
-    int     fd[2];
-    int     oldfd;
-    int     heredoc;
-}   t_pipex;
+	int		ac;
+	char	**av;
+	char	**envp;
+	int		i;
+	pid_t	pid;
+	int		fd[2];
+	int		oldfd;
+	int		heredoc;
+}	t_pipex;
 
 void	child_process(t_pipex *pipe);
 
-int     handle_fd(t_pipex *pipex);
+int		handle_fd(t_pipex *pipex);
 
 void	parent_process(char **av, char **envp, int *fd);
 
 void	process(t_pipex *pipe);
 
-int     check_path(char **envp);
+int		check_path(char **envp);
 
 t_pipex	*set_pipex(int ac, char **av, char **envp);
 
@@ -58,10 +58,12 @@ void	error(void);
 
 void	print(char *s);
 
-int     last_cmd(t_pipex *pipex);
+int		last_cmd(t_pipex *pipex);
 
-int     handle_fd(t_pipex *pipex);
+int		handle_fd(t_pipex *pipex);
 
-int     first_cmd(t_pipex *pipex);
+int		first_cmd(t_pipex *pipex);
+
+int		heredoc(t_pipex *pipex);
 
 #endif

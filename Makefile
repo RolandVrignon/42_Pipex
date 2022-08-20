@@ -6,7 +6,7 @@
 #    By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/22 17:24:14 by rvrignon          #+#    #+#              #
-#    Updated: 2022/08/17 15:41:41 by rvrignon         ###   ########.fr        #
+#    Updated: 2022/08/20 16:07:43 by rvrignon         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,9 @@ SRC =  	ft_pipex/pipex.c \
 		ft_pipex/utils.c 
 		
 SRCB =  ft_pipex_bonus/pipex.c \
-		ft_pipex_bonus/utils.c 
+		ft_pipex_bonus/utils.c \
+		ft_pipex_bonus/utils_two.c \
+		ft_pipex_bonus/fd_manager.c \
 		
 OBJ		=	$(SRC:.c=.o)
 OBJB	=	$(SRCB:.c=.o)

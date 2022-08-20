@@ -6,7 +6,7 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/07 14:25:22 by rvrignon          #+#    #+#             */
-/*   Updated: 2022/08/18 01:48:55 by rvrignon         ###   ########.fr       */
+/*   Updated: 2022/08/20 11:57:35 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,12 @@ typedef struct s_pipex{
     pid_t   pid;
     int     fd[2];
     int     oldfd;
+    int     heredoc;
 }   t_pipex;
 
 void	child_process(t_pipex *pipe);
 
-void	handle_fd(t_pipex *pipex);
+int     handle_fd(t_pipex *pipex);
 
 void	parent_process(char **av, char **envp, int *fd);
 
@@ -57,10 +58,10 @@ void	error(void);
 
 void	print(char *s);
 
-void	last_cmd(t_pipex *pipex);
+int     last_cmd(t_pipex *pipex);
 
-void	handle_fd(t_pipex *pipex);
+int     handle_fd(t_pipex *pipex);
 
-void	first_cmd(t_pipex *pipex);
+int     first_cmd(t_pipex *pipex);
 
 #endif

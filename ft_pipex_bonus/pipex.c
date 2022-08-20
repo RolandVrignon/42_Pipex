@@ -6,13 +6,13 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/17 19:25:10 by rvrignon          #+#    #+#             */
-/*   Updated: 2022/08/19 12:26:01 by rvrignon         ###   ########.fr       */
+/*   Updated: 2022/08/20 12:41:10 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./pipex_bonus.h"
 
-void	first_cmd(t_pipex *pipex)
+int	first_cmd(t_pipex *pipex)
 {
 	int filein;
 
@@ -21,14 +21,32 @@ void	first_cmd(t_pipex *pipex)
 	{
 		perror(pipex->av[1]);
 		close_pipes(pipex->fd);
-		return ;
+		return (0);
 	}
 	dup2(filein, STDIN_FILENO);
 	dup2(pipex->fd[1], STDOUT_FILENO);
 	close(pipex->fd[0]);
+	return (1);
 }
 
-void	last_cmd(t_pipex *pipex)
+int	heredoc(t_pipex *pipex)
+{
+	char 	*line;
+
+	ft_putstr_fd("> ", 2);
+	line = get_next_line(0, pipex->av[2]);
+	while (line)
+	{
+		write(pipex->fd[1], line, ft_strlen(line));
+		free(line);
+		ft_putstr_fd("> ", 2);
+		line = get_next_line(0, pipex->av[2]);
+	}
+	close(pipex->fd[0]);
+	return (0);
+}
+
+int	last_cmd(t_pipex *pipex)
 {
 	int fileout;
 
@@ -42,26 +60,30 @@ void	last_cmd(t_pipex *pipex)
 	dup2(pipex->oldfd, STDIN_FILENO);
 	dup2(fileout, STDOUT_FILENO);
 	close(pipex->fd[1]);
+	return (1);
 }
 
-void	handle_fd(t_pipex *pipex)
+int	handle_fd(t_pipex *pipex)
 {
-	if (pipex->i == 2)
-		first_cmd(pipex);
+	if (pipex->i == 2 && !pipex->heredoc)
+		return (first_cmd(pipex));
+	else if(pipex->i == 2 && pipex->heredoc)
+		return (heredoc(pipex));
 	else if (pipex->i == pipex->ac - 2)
-		last_cmd(pipex);
+		return (last_cmd(pipex));
 	else
 	{
 		dup2(pipex->oldfd, STDIN_FILENO);
 		dup2(pipex->fd[1], STDOUT_FILENO);
 		close(pipex->fd[0]);
+		return (1);
 	}
 }
 
 void	child_process(t_pipex *pipex)
 {
-	handle_fd(pipex);
-	execute(pipex->av[pipex->i], pipex->envp);
+	if (handle_fd(pipex))
+		execute(pipex->av[pipex->i], pipex->envp);
 }
 
 void	process(t_pipex *pipex)

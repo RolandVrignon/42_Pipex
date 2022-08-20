@@ -6,7 +6,7 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/17 19:25:17 by rvrignon          #+#    #+#             */
-/*   Updated: 2022/08/18 02:10:44 by rvrignon         ###   ########.fr       */
+/*   Updated: 2022/08/20 12:20:00 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,15 +118,20 @@ void	execute(char *av, char **envp)
 t_pipex	*set_pipex(int ac, char **av, char **envp)
 {
 	t_pipex *pipex;
+	int		heredoc;
 
 	pipex = (t_pipex *)malloc(sizeof(t_pipex));
 	if (!pipex)
 		return (0);
+	heredoc = 0;
+	if (ft_strncmp(av[1], "here_doc", ft_strlen(av[1])) == 0)
+		heredoc++;
 	pipex->ac = ac;
 	pipex->av = av;
 	pipex->envp = envp;
 	pipex->i = 2;
 	pipex->oldfd = -1;
+	pipex->heredoc = heredoc;
 	
 	return (pipex);
 }

@@ -6,7 +6,7 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/17 19:25:17 by rvrignon          #+#    #+#             */
-/*   Updated: 2022/08/07 14:26:49 by rvrignon         ###   ########.fr       */
+/*   Updated: 2022/08/20 16:31:15 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,4 +91,10 @@ void	execute(char *av, char **envp, int *fd)
 	}
 	if (execve(path, cmd, envp) == -1)
 		exit(EXIT_FAILURE);
+}
+
+void	close_pipes(int *fd)
+{
+	close(fd[0]);
+	close(fd[1]);
 }

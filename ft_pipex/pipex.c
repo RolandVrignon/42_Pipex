@@ -6,17 +6,11 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/17 19:25:10 by rvrignon          #+#    #+#             */
-/*   Updated: 2022/08/18 02:08:47 by rvrignon         ###   ########.fr       */
+/*   Updated: 2022/08/20 16:32:51 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./pipex.h"
-
-void	close_pipes(int *fd)
-{
-	close(fd[0]);
-	close(fd[1]);
-}
 
 void	first_child(char **av, char **envp, int *fd)
 {
@@ -78,11 +72,22 @@ void	process(char **av, char **envp, int fd[2])
 	}
 }
 
+static int	usage(void)
+{
+	ft_putstr_fd("Error : Too few or too many arguments\n\n", 2);
+	ft_putstr_fd("Pipe example :\n", 2);
+	ft_putstr_fd(">$ < infile cmd1 | cmd2 > outfile\n", 2);
+	ft_putstr_fd(">$ ./pipex infile cmd1 cmd2 outfile\n\n", 2);
+	return (0);
+}
+
 int	main(int ac, char **av, char **envp)
 {
 	char	**paths;
 	int		fd[2];
 
+	if (ac != 5)
+		return (usage());
 	paths = find_path(envp);
 	if (!paths)
 	{	
@@ -91,18 +96,13 @@ int	main(int ac, char **av, char **envp)
 	}
 	else
 		free_double(paths);
-	if (ac == 5)
+	if (pipe(fd) == -1)
 	{
-		if (pipe(fd) == -1)
-		{
-			ft_putstr_fd("Error\n", 2);
-			close_pipes(fd);
-			exit(EXIT_FAILURE);
-		}
-		process(av, envp, fd);
+		ft_putstr_fd("Error\n", 2);
 		close_pipes(fd);
+		exit(EXIT_FAILURE);
 	}
-	else
-		ft_putstr_fd("Too few or too many arguments\n", 2);
+	process(av, envp, fd);
+	close_pipes(fd);
 	return (0);
 }

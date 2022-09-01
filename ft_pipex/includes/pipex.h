@@ -6,13 +6,12 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/07 14:25:22 by rvrignon          #+#    #+#             */
-/*   Updated: 2022/09/01 18:02:56 by rvrignon         ###   ########.fr       */
+/*   Updated: 2022/09/01 18:50:05 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PIPEX_H
 # define PIPEX_H
-# define TOTO 1
 
 # include <stdlib.h>
 # include <unistd.h>

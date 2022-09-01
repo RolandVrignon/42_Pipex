@@ -6,7 +6,7 @@
 #    By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/01 19:57:37 by rvrignon          #+#    #+#              #
-#    Updated: 2022/09/01 20:51:19 by rvrignon         ###   ########.fr        #
+#    Updated: 2022/09/01 20:58:05 by rvrignon         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -52,10 +52,9 @@ WHITE			= 	\033[1;37m
 
 ### RULES ###
 
-default:		mandatory
-
 # ------- ALL
-mandatory: 			$(NAME)
+
+all: 			$(NAME)
 
 $(NAME): $(OBJ)
 	@echo "$(YELLOW)libft..$(NOC)"
@@ -84,6 +83,7 @@ $(OBJ_PATH)/%.o: $(SRC_BONUS_PATH)/%.c $(INCLUDE)/$(NAME_BONUS).h
 	@echo "$(BLUE)gcc $(WHITE)$(notdir $@)$(NOC)"
 
 # ------- Clean
+
 clean:
 	@echo "$(RED)clean$(NOC)"
 	@make clean -sC $(LIBFT_PATH)
@@ -98,6 +98,7 @@ fclean: clean
 re: fclean all
 
 # ------- Gadget
+
 norm:
 	-@norminette $(SRC_PATH)
 	-@norminette $(SRC_BONUS_PATH)

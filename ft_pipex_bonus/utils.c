@@ -6,7 +6,7 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/17 19:25:17 by rvrignon          #+#    #+#             */
-/*   Updated: 2022/08/20 16:14:40 by rvrignon         ###   ########.fr       */
+/*   Updated: 2022/09/01 14:51:36 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,8 @@ char	*find_cmdpath(char *cmd, char **envp)
 	char	*part_path;
 
 	paths = find_path(envp);
+	if (!paths)
+		return (0);
 	i = 0;
 	while (paths[i])
 	{

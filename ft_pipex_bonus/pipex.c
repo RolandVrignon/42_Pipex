@@ -6,7 +6,7 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/17 19:25:10 by rvrignon          #+#    #+#             */
-/*   Updated: 2022/08/31 21:07:43 by rvrignon         ###   ########.fr       */
+/*   Updated: 2022/09/01 14:50:55 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,6 @@ int	main(int ac, char **av, char **envp)
 {
 	t_pipex	*pipex;
 
-	if (!check_path(envp))
-		return (0);
 	if (ac > 1)
 	{
 		if ((ft_strncmp(av[1], "here_doc", ft_strlen(av[1])) == 0 && ac < 6)

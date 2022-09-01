@@ -6,7 +6,7 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/17 19:25:10 by rvrignon          #+#    #+#             */
-/*   Updated: 2022/08/20 16:32:51 by rvrignon         ###   ########.fr       */
+/*   Updated: 2022/09/01 14:46:21 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,19 +83,10 @@ static int	usage(void)
 
 int	main(int ac, char **av, char **envp)
 {
-	char	**paths;
 	int		fd[2];
 
 	if (ac != 5)
 		return (usage());
-	paths = find_path(envp);
-	if (!paths)
-	{	
-		ft_printf("Env error\n");
-		return (0);
-	}
-	else
-		free_double(paths);
 	if (pipe(fd) == -1)
 	{
 		ft_putstr_fd("Error\n", 2);

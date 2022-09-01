@@ -6,11 +6,11 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/17 19:25:10 by rvrignon          #+#    #+#             */
-/*   Updated: 2022/09/01 14:46:21 by rvrignon         ###   ########.fr       */
+/*   Updated: 2022/09/01 18:02:45 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./pipex.h"
+#include "../includes/pipex.h"
 
 void	first_child(char **av, char **envp, int *fd)
 {

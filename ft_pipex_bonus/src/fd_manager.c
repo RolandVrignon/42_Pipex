@@ -6,11 +6,11 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/20 16:02:30 by rvrignon          #+#    #+#             */
-/*   Updated: 2022/08/20 16:09:04 by rvrignon         ###   ########.fr       */
+/*   Updated: 2022/09/01 18:02:18 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./pipex_bonus.h"
+#include "../includes/pipex.h"
 
 int	first_cmd(t_pipex *pipex)
 {

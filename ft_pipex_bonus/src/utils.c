@@ -6,11 +6,11 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/17 19:25:17 by rvrignon          #+#    #+#             */
-/*   Updated: 2022/09/01 15:08:51 by rvrignon         ###   ########.fr       */
+/*   Updated: 2022/09/01 18:02:26 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./pipex_bonus.h"
+#include "../includes/pipex.h"
 
 void	free_double(char **tab)
 {

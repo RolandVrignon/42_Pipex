@@ -1,17 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex_bonus.h                                      :+:      :+:    :+:   */
+/*   pipex.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/07 14:25:22 by rvrignon          #+#    #+#             */
-/*   Updated: 2022/08/20 16:14:52 by rvrignon         ###   ########.fr       */
+/*   Updated: 2022/09/01 18:02:56 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PIPEX_BONUS_H
-# define PIPEX_BONUS_H
+#ifndef PIPEX_H
+# define PIPEX_H
+# define TOTO 1
 
 # include <stdlib.h>
 # include <unistd.h>
@@ -19,28 +20,15 @@
 # include <stdio.h>
 # include <sys/wait.h>
 # include <fcntl.h>
-# include "../libft/libft.h"
+# include "../../libft/libft.h"
 
-typedef struct s_pipex{
-	int		ac;
-	char	**av;
-	char	**envp;
-	int		i;
-	pid_t	pid;
-	int		fd[2];
-	int		oldfd;
-	int		heredoc;
-}	t_pipex;
+void	close_pipes(int *fd);
 
-void	child_process(t_pipex *pipe);
+void	first_child(char **av, char **envp, int *fd);
 
-int		handle_fd(t_pipex *pipex);
+void	second_child(char **av, char **envp, int *fd);
 
-void	process(t_pipex *pipe);
-
-int		check_path(char **envp);
-
-t_pipex	*set_pipex(int ac, char **av, char **envp);
+void	process(char **av, char **envp, int fd[2]);
 
 void	free_double(char **tab);
 
@@ -49,19 +37,5 @@ char	**find_path(char **envp);
 char	*find_cmdpath(char *cmd, char **envp);
 
 void	execute(char *av, char **envp, int *fd);
-
-void	close_pipes(int fd[2]);
-
-void	error(void);
-
-void	print(char *s);
-
-int		last_cmd(t_pipex *pipex);
-
-int		handle_fd(t_pipex *pipex);
-
-int		first_cmd(t_pipex *pipex);
-
-int		heredoc(t_pipex *pipex);
 
 #endif

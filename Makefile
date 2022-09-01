@@ -6,53 +6,56 @@
 #    By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/01 19:57:37 by rvrignon          #+#    #+#              #
-#    Updated: 2022/09/01 20:29:41 by rvrignon         ###   ########.fr        #
+#    Updated: 2022/09/01 20:38:33 by rvrignon         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 ### COMPILATION ###
-CC				= gcc
-FLAGS			= -Wall -Wextra -Werror
+CC				= 	gcc
+FLAGS			= 	-Wall -Wextra -Werror
 
 ### EXECUTABLE ###
-NAME			= pipex
-NAME_BONUS 		= pipex_bonus
-PROG			= pipex
+NAME			= 	pipex
+NAME_BONUS 		= 	pipex_bonus
+PROG			= 	pipex
 
 ### INCLUDES ###
-INCLUDE			= includes
-LIBFT_PATH		= libft
-SRC_PATH		= src/mandatory
-SRC_BONUS_PATH	= src/bonus
-OBJ_PATH		= obj
+INCLUDE			= 	includes
+LIBFT_PATH		= 	libft
+SRC_PATH		= 	src/mandatory
+SRC_BONUS_PATH	= 	src/bonus
+OBJ_PATH		= 	obj
 
 ### SOURCE FILES ###
 SOURCES 		= 	pipex.c \
 					utils.c \
 
-SOURCES_BONUS 	= 	pipex.c \
+SOURCES_BONUS 	= 	pipex_bonus.c \
 					utils_one.c \
 					fd_manager.c \
 					utils_two.c \
 
 ### OBJECTS ###
-SRC				= $(addprefix $(SRC_PATH)/,$(SOURCES))
-OBJ				= $(addprefix $(OBJ_PATH)/,$(SOURCES:.c=.o))
+SRC				= 	$(addprefix $(SRC_PATH)/,$(SOURCES))
+OBJ				= 	$(addprefix $(OBJ_PATH)/,$(SOURCES:.c=.o))
 
-SRC_BONUS		= $(addprefix $(SRC_BONUS_PATH)/,$(SOURCES_BONUS))
-OBJ_BONUS		= $(addprefix $(OBJ_PATH)/,$(SOURCES_BONUS:.c=.o))
+SRC_BONUS		= 	$(addprefix $(SRC_BONUS_PATH)/,$(SOURCES_BONUS))
+OBJ_BONUS		= 	$(addprefix $(OBJ_PATH)/,$(SOURCES_BONUS:.c=.o))
 
 ### COLORS ###
-NOC		= \033[0m
-RED		= \033[1;31m
-GREEN	= \033[1;32m
-YELLOW	= \033[1;33m
-BLUE	= \033[1;34m
-WHITE	= \033[1;37m
+NOC				= 	\033[0m
+RED				= 	\033[1;31m
+GREEN			= 	\033[1;32m
+YELLOW			= 	\033[1;33m
+BLUE			= 	\033[1;34m
+WHITE			= 	\033[1;37m
 
 ### RULES ###
+
+default:		mandatory
+
 # ------- ALL
-all: $(NAME)
+mandatory: 			$(NAME)
 
 $(NAME): $(OBJ)
 	@echo "$(YELLOW)libft..$(NOC)"
@@ -66,7 +69,8 @@ $(OBJ_PATH)/%.o: $(SRC_PATH)/%.c $(INCLUDE)/$(NAME).h
 	@echo "$(BLUE)gcc $(WHITE)$(notdir $@)$(NOC)"
 
 # ------- Bonus
-bonus: $(NAME_BONUS)
+
+bonus: 			$(NAME_BONUS)
 
 $(NAME_BONUS): $(OBJ_BONUS)
 	@echo "$(YELLOW)libft..$(NOC)"

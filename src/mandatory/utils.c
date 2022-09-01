@@ -6,7 +6,7 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/17 19:25:17 by rvrignon          #+#    #+#             */
-/*   Updated: 2022/09/01 18:02:47 by rvrignon         ###   ########.fr       */
+/*   Updated: 2022/09/01 20:17:58 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,19 +25,19 @@ void	free_double(char **tab)
 	free(tab);
 }
 
-char	**find_path(char **envp)
+char	**find_path(char **e)
 {
 	int		i;
 	char	**paths;
 
-	if (!envp[0])
+	if (!e[0])
 		return (NULL);
 	i = 0;
-	while (envp[i + 1] && (ft_strnstr(envp[i], "PATH", 4) == 0 || envp[i][4] != '='))
+	while (e[i + 1] && (ft_strnstr(e[i], "PATH", 4) == 0 || e[i][4] != '='))
 		i++;
-	if (ft_strnstr(envp[i], "PATH", 4) == 0 || envp[i][4] != '=')
+	if (ft_strnstr(e[i], "PATH", 4) == 0 || e[i][4] != '=')
 		return (NULL);
-	paths = ft_split(envp[i] + 5, ':');
+	paths = ft_split(e[i] + 5, ':');
 	return (paths);
 }
 

@@ -6,7 +6,7 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/07 14:25:22 by rvrignon          #+#    #+#             */
-/*   Updated: 2022/09/01 18:50:05 by rvrignon         ###   ########.fr       */
+/*   Updated: 2022/09/01 19:58:59 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 # include <stdio.h>
 # include <sys/wait.h>
 # include <fcntl.h>
-# include "../../libft/libft.h"
+# include "../libft/libft.h"
 
 void	close_pipes(int *fd);
 

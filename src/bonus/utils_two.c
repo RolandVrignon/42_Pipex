@@ -6,11 +6,11 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/20 16:07:13 by rvrignon          #+#    #+#             */
-/*   Updated: 2022/09/01 18:02:25 by rvrignon         ###   ########.fr       */
+/*   Updated: 2022/09/01 19:57:01 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/pipex.h"
+#include "../includes/pipex_bonus.h"
 
 t_pipex	*set_pipex(int ac, char **av, char **envp)
 {

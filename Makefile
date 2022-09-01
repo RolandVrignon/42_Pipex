@@ -5,84 +5,99 @@
 #                                                     +:+ +:+         +:+      #
 #    By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2022/06/22 17:24:14 by rvrignon          #+#    #+#              #
-#    Updated: 2022/09/01 19:21:45 by rvrignon         ###   ########.fr        #
+#    Created: 2022/09/01 19:57:37 by rvrignon          #+#    #+#              #
+#    Updated: 2022/09/01 20:15:28 by rvrignon         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-PROG		=	pipex
-CC			=	gcc
-RM			=	rm -f
-CFLAGS		=	-MMD -Wall -Werror -Wextra -g
+### COMPILATION ###
+CC				= gcc
+FLAGS			= -Wall -Wextra -Werror
 
-DIR			= 	ft_pipex/
-DIRB		= 	ft_pipex_bonus/
+### EXECUTABLE ###
+NAME			= pipex
+NAME_BONUS 		= pipex_bonus
 
-SRCDIR   	= 	src
-OBJDIR   	= 	obj
+### INCLUDES ###
+INCLUDE			= includes
+LIBFT_PATH		= libft
+SRC_PATH		= src/mandatory
+SRC_BONUS_PATH	= src/bonus
+OBJ_PATH		= obj
 
-SRCFILES	=  	$(DIR)$(SRCDIR)/pipex.c \
-				$(DIR)$(SRCDIR)/utils.c
+### SOURCE FILES ###
+SOURCES 		= 	pipex.c \
+					utils.c \
 
-OBJFILES	=  	$(DIR)$(OBJDIR)/pipex.o \
-				$(DIR)$(OBJDIR)/utils.o  
-		
-SRCBFILES	=  	$(DIRB)$(SRCDIR)/pipex.c \
-				$(DIRB)$(SRCDIR)/utils.c \
-				$(DIRB)$(SRCDIR)/utils_two.c \
-				$(DIRB)$(SRCDIR)/fd_manager.c \
+SOURCES_BONUS 	= 	pipex_bonus.c \
+					utils_bonus.c \
+					fd_manager.c \
+					utils_two.c \
 
-OBJ			=	$(SRCFILES:.c=.o)
-OBJB		=	$(SRCBFILES:.c=.o)
+### OBJECTS ###
+SRC				= $(addprefix $(SRC_PATH)/,$(SOURCES))
+OBJ				= $(addprefix $(OBJ_PATH)/,$(SOURCES:.c=.o))
 
-DEP 		=	$(OBJ:.o=.d)
-DEPB 		=	$(OBJB:.o=.d)
+SRC_BONUS		= $(addprefix $(SRC_BONUS_PATH)/,$(SOURCES_BONUS))
+OBJ_BONUS		= $(addprefix $(OBJ_PATH)/,$(SOURCES_BONUS:.c=.o))
 
-NAME		=	ft_pipex/obj/pipex.a
-NAMEB		=	ft_pipex_bonus/obj/pipex.a
+### COLORS ###
+NOC		= \033[0m
+RED		= \033[1;31m
+GREEN	= \033[1;32m
+YELLOW	= \033[1;33m
+BLUE	= \033[1;34m
+WHITE	= \033[1;37m
 
-all:			$(NAME)
+### RULES ###
 
-$(NAME):		$(OBJ)
-				make re -C libft
-				cp libft/libft.a $(NAME)
-				ar rcs $(NAME) $(OBJ)
-				$(CC) $(CFLAGS) -o $(PROG) $(SRCFILES) $(NAME)
-				@cp $(DIR)$(SRCDIR)/*.o $(DIR)$(OBJDIR)/.
-				@$(RM) -rf $(DIR)$(SRCDIR)/*.o
-				@cp $(DIR)$(SRCDIR)/*.d $(DIR)$(OBJDIR)/.
-				@$(RM) -rf $(DIR)$(SRCDIR)/*.d
-				@echo "💯 💯 💯 💯 💯 💯 💯 💯"
+all: $(NAME)
 
-bonus:			$(NAMEB)
+$(NAME): $(OBJ)
+	@echo "$(YELLOW)libft..$(NOC)"
+	@make -sC $(LIBFT_PATH)
+	@$(CC) $(FLAGS) -L $(LIBFT_PATH) -o $@ $^ -lft
+	@echo "$(GREEN)$@ ✅$(NOC)"
 
-$(NAMEB):		$(OBJB)
-				make re -C libft
-				cp libft/libft.a $(NAMEB)
-				ar rcs $(NAMEB) $(OBJB)
-				$(CC) $(CFLAGS) -o $(PROG) $(SRCBFILES) $(NAMEB)
-				@cp $(DIRB)$(SRCDIR)/*.o $(DIRB)$(OBJDIR)/.
-				@$(RM) -rf $(DIRB)$(SRCDIR)/*.o
-				@cp $(DIRB)$(SRCDIR)/*.d $(DIRB)$(OBJDIR)/.
-				@$(RM) -rf $(DIRB)$(SRCDIR)/*.d
-				@echo "💯 💯 💯 💯 💯 💯 💯 💯"
+$(OBJ_PATH)/%.o: $(SRC_PATH)/%.c $(INCLUDE)/$(NAME).h
+	@mkdir -p obj
+	@$(CC) $(FLAGS) -I$(INCLUDE) -c -o $@ $<
+	@echo "$(BLUE)gcc $(WHITE)$(notdir $@)$(NOC)"
 
-clean:		
-				@$(MAKE) fclean -C ./libft
-				@$(RM) $(NAME) $(OBJ) $(DEP)
-				@$(RM) $(NAMEB) $(OBJB) $(DEPB)
-				rm -rf ft_pipex/obj/*
-				rm -rf ft_pipex_bonus/obj/*
-				
-fclean:			clean
-				@$(MAKE) fclean -C ./libft
-				@$(RM) $(PROG) $(PROG).d
-				@$(RM) *.txt
-				@echo "♻️ ♻️ 🗑️ 🗑️ ♻️ ♻️"
+bonus: $(NAME_BONUS)
 
+$(NAME_BONUS): $(OBJ_BONUS)
+	@echo "$(YELLOW)libft..$(NOC)"
+	@make -sC $(LIBFT_PATH)
+	@$(CC) $(FLAGS) -L $(LIBFT_PATH) -o $@ $^ -lft
+	@echo "$(GREEN)$@ ✅$(NOC)"
 
-re:				fclean $(NAME)
+$(OBJ_PATH)/%.o: $(SRC_BONUS_PATH)/%.c $(INCLUDE)/$(NAME_BONUS).h
+	@mkdir -p obj
+	@$(CC) $(FLAGS) -I$(INCLUDE) -c -o $@ $<
+	@echo "$(BLUE)gcc $(WHITE)$(notdir $@)$(NOC)"
 
-reb:			fclean $(NAMEB)
+clean:
+	@echo "$(RED)clean$(NOC)"
+	@make clean -sC $(LIBFT_PATH)
+	@rm -rf $(OBJ_PATH)
 
-.PHONY:			all bonus clean fclean re object
+fclean: clean
+	@echo "$(RED)fclean$(NOC)"
+	@make fclean -sC $(LIBFT_PATH)
+	@rm -f $(NAME)
+	@rm -f $(NAME_BONUS)
+
+re: fclean all
+
+norm:
+	-@norminette $(SRC_PATH)
+	-@norminette $(INCLUDE)
+
+push:
+	git add .
+	git status
+	git commit -m pipex
+	git push
+
+.PHONY:	all clean fclean re norm push

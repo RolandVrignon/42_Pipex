@@ -6,7 +6,7 @@
 #    By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/01 19:57:37 by rvrignon          #+#    #+#              #
-#    Updated: 2022/09/01 20:17:25 by rvrignon         ###   ########.fr        #
+#    Updated: 2022/09/01 20:29:41 by rvrignon         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,6 +17,7 @@ FLAGS			= -Wall -Wextra -Werror
 ### EXECUTABLE ###
 NAME			= pipex
 NAME_BONUS 		= pipex_bonus
+PROG			= pipex
 
 ### INCLUDES ###
 INCLUDE			= includes
@@ -29,8 +30,8 @@ OBJ_PATH		= obj
 SOURCES 		= 	pipex.c \
 					utils.c \
 
-SOURCES_BONUS 	= 	pipex_bonus.c \
-					utils_bonus.c \
+SOURCES_BONUS 	= 	pipex.c \
+					utils_one.c \
 					fd_manager.c \
 					utils_two.c \
 
@@ -50,13 +51,13 @@ BLUE	= \033[1;34m
 WHITE	= \033[1;37m
 
 ### RULES ###
-
+# ------- ALL
 all: $(NAME)
 
 $(NAME): $(OBJ)
 	@echo "$(YELLOW)libft..$(NOC)"
 	@make -sC $(LIBFT_PATH)
-	@$(CC) $(FLAGS) -L $(LIBFT_PATH) -o $@ $^ -lft
+	@$(CC) $(FLAGS) -L $(LIBFT_PATH) -o $(PROG) $^ -lft
 	@echo "$(GREEN)$@ ✅$(NOC)"
 
 $(OBJ_PATH)/%.o: $(SRC_PATH)/%.c $(INCLUDE)/$(NAME).h
@@ -64,12 +65,13 @@ $(OBJ_PATH)/%.o: $(SRC_PATH)/%.c $(INCLUDE)/$(NAME).h
 	@$(CC) $(FLAGS) -I$(INCLUDE) -c -o $@ $<
 	@echo "$(BLUE)gcc $(WHITE)$(notdir $@)$(NOC)"
 
+# ------- Bonus
 bonus: $(NAME_BONUS)
 
 $(NAME_BONUS): $(OBJ_BONUS)
 	@echo "$(YELLOW)libft..$(NOC)"
 	@make -sC $(LIBFT_PATH)
-	@$(CC) $(FLAGS) -L $(LIBFT_PATH) -o $@ $^ -lft
+	@$(CC) $(FLAGS) -L $(LIBFT_PATH) -o $(PROG) $^ -lft
 	@echo "$(GREEN)$@ ✅$(NOC)"
 
 $(OBJ_PATH)/%.o: $(SRC_BONUS_PATH)/%.c $(INCLUDE)/$(NAME_BONUS).h
@@ -77,6 +79,7 @@ $(OBJ_PATH)/%.o: $(SRC_BONUS_PATH)/%.c $(INCLUDE)/$(NAME_BONUS).h
 	@$(CC) $(FLAGS) -I$(INCLUDE) -c -o $@ $<
 	@echo "$(BLUE)gcc $(WHITE)$(notdir $@)$(NOC)"
 
+# ------- Clean
 clean:
 	@echo "$(RED)clean$(NOC)"
 	@make clean -sC $(LIBFT_PATH)
@@ -90,12 +93,13 @@ fclean: clean
 
 re: fclean all
 
+# ------- Gadget
 norm:
 	-@norminette $(SRC_PATH)
 	-@norminette $(SRC_BONUS_PATH)
 	-@norminette $(INCLUDE)
 
-push:
+push: fclean
 	git add .
 	git status
 	git commit -m pipex

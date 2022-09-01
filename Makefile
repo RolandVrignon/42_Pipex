@@ -6,7 +6,7 @@
 #    By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/01 19:57:37 by rvrignon          #+#    #+#              #
-#    Updated: 2022/09/01 20:38:33 by rvrignon         ###   ########.fr        #
+#    Updated: 2022/09/01 20:40:28 by rvrignon         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -109,4 +109,4 @@ push: fclean
 	git commit -m pipex
 	git push
 
-.PHONY:	all clean fclean re norm push
+.PHONY:	 default mandatory bonus clean fclean re norm push

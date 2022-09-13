@@ -6,7 +6,7 @@
 #    By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/01 19:57:37 by rvrignon          #+#    #+#              #
-#    Updated: 2022/09/01 20:58:05 by rvrignon         ###   ########.fr        #
+#    Updated: 2022/09/13 14:50:30 by rvrignon         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ NAME			= 	pipex
 NAME_BONUS 		= 	pipex_bonus
 PROG			= 	pipex
 
-### INCLUDES ###
+### PATHS ###
 INCLUDE			= 	includes
 LIBFT_PATH		= 	libft
 SRC_PATH		= 	src/mandatory
@@ -54,7 +54,7 @@ WHITE			= 	\033[1;37m
 
 # ------- ALL
 
-all: 			$(NAME)
+all: 	$(NAME)
 
 $(NAME): $(OBJ)
 	@echo "$(YELLOW)libft..$(NOC)"
@@ -110,4 +110,4 @@ push: fclean
 	git commit -m pipex
 	git push
 
-.PHONY:	 default mandatory bonus clean fclean re norm push
+.PHONY:	 default mandatory clean fclean re norm push

@@ -6,7 +6,7 @@
 #    By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/01 19:57:37 by rvrignon          #+#    #+#              #
-#    Updated: 2022/09/13 15:00:40 by rvrignon         ###   ########.fr        #
+#    Updated: 2022/09/13 16:54:21 by rvrignon         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,6 +29,7 @@ OBJ_PATH		= 	obj
 ### SOURCE FILES ###
 SOURCES 		= 	pipex.c \
 					utils.c \
+					utils_to.c \
 
 SOURCES_BONUS 	= 	pipex_bonus.c \
 					utils_one.c \

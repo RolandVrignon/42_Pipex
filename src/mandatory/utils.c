@@ -6,7 +6,7 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/17 19:25:17 by rvrignon          #+#    #+#             */
-/*   Updated: 2022/09/13 14:12:27 by rvrignon         ###   ########.fr       */
+/*   Updated: 2022/09/13 17:04:46 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,36 +67,50 @@ char	*find_cmdpath(char *cmd, char **envp)
 	return (0);
 }
 
+void	err_return(char **cmd, int i, int *fd)
+{
+	char	*err;
+
+	if (!cmd)
+		ft_putstr_fd("Command '' not found\n", 2);
+	else
+	{
+		err = ft_strjoin(cmd[0], ": Command not found\n");
+		ft_putstr_fd(err, 2);
+		free(err);
+	}
+	if (cmd)
+	{
+		while (cmd[++i])
+			free(cmd[i]);
+		free(cmd);
+	}
+	close_pipes(fd);
+}
+
 void	execute(char *av, char **envp, int *fd)
 {
 	char	**cmd;
 	int		i;
 	char	*path;
-	char	*err;
 
 	i = -1;
-	cmd = ft_split(av, ' ');
-	if (access(cmd[0], F_OK) == 0)
-		path = cmd[0];
+	cmd = NULL;
+	if (ft_strlen(av) == 0)
+		path = NULL;
 	else
-		path = find_cmdpath(cmd[0], envp);
+	{
+		cmd = ft_split(av, ' ');
+		if (access(cmd[0], F_OK) == 0)
+			path = cmd[0];
+		else
+			path = find_cmdpath(cmd[0], envp);
+	}
 	if (!path)
 	{
-		err = ft_strjoin(cmd[0], ": Command not found\n");
-		ft_putstr_fd(err, 2);
-		free(err);
-		while (cmd[++i])
-			free(cmd[i]);
-		free(cmd);
-		close_pipes(fd);
+		err_return(cmd, i, fd);
 		exit(EXIT_FAILURE);
 	}
 	if (execve(path, cmd, envp) == -1)
 		exit(EXIT_FAILURE);
-}
-
-void	close_pipes(int *fd)
-{
-	close(fd[0]);
-	close(fd[1]);
 }

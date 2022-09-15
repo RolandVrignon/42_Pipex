@@ -6,7 +6,7 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/07 14:25:22 by rvrignon          #+#    #+#             */
-/*   Updated: 2022/09/13 16:47:36 by rvrignon         ###   ########.fr       */
+/*   Updated: 2022/09/15 14:59:11 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,5 +63,9 @@ int		handle_fd(t_pipex *pipex);
 int		first_cmd(t_pipex *pipex);
 
 int		heredoc(t_pipex *pipex);
+
+void	err_return(char **cmd, int *fd);
+
+char	*setpath(char *av, char **envp);
 
 #endif

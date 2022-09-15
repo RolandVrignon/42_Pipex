@@ -6,11 +6,30 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/20 16:02:30 by rvrignon          #+#    #+#             */
-/*   Updated: 2022/09/13 17:03:48 by rvrignon         ###   ########.fr       */
+/*   Updated: 2022/09/15 16:05:15 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/pipex_bonus.h"
+
+int	check_path(char **envp)
+{
+	char	**paths;
+	int		value;
+
+	paths = find_path(envp);
+	if (!paths)
+	{	
+		ft_printf("Env error\n");
+		value = 0;
+	}
+	else
+	{
+		free_double(paths);
+		value = 1;
+	}
+	return (value);
+}
 
 int	first_cmd(t_pipex *pipex)
 {

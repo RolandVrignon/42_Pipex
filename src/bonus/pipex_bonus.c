@@ -6,11 +6,31 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/17 19:25:10 by rvrignon          #+#    #+#             */
-/*   Updated: 2022/09/13 17:03:54 by rvrignon         ###   ########.fr       */
+/*   Updated: 2022/09/15 15:42:09 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/pipex_bonus.h"
+
+void	err_return(char **cmd, int *fd)
+{
+	char	*err;
+	int		i;
+
+	if (!cmd)
+		ft_putstr_fd("Command '' not found\n", 2);
+	else
+	{
+		err = ft_strjoin(cmd[0], ": Command not found\n");
+		ft_putstr_fd(err, 2);
+		free(err);
+		i = -1;
+		while (cmd[++i])
+			free(cmd[i]);
+		free(cmd);
+	}
+	close_pipes(fd);
+}
 
 void	child_process(t_pipex *pipex)
 {
@@ -33,7 +53,8 @@ void	process(t_pipex *pipex)
 		{	
 			if (pipex->heredoc && pipex->i == 2)
 				wait(0);
-			close(pipex->fd[1]);
+			if (pipex->fd[1] > 0)
+				close(pipex->fd[1]);
 			if (pipex->oldfd > 0)
 				close(pipex->oldfd);
 			pipex->oldfd = pipex->fd[0];

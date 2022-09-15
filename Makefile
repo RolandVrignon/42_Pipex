@@ -6,7 +6,7 @@
 #    By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/01 19:57:37 by rvrignon          #+#    #+#              #
-#    Updated: 2022/09/13 16:54:21 by rvrignon         ###   ########.fr        #
+#    Updated: 2022/09/15 16:21:34 by rvrignon         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -96,7 +96,8 @@ fclean: clean
 	@rm -f $(NAME)
 	@rm -f $(NAME_BONUS)
 
-re: fclean all
+re: fclean 
+	make all
 
 # ------- Gadget
 

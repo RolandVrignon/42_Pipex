@@ -6,7 +6,7 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/17 19:25:17 by rvrignon          #+#    #+#             */
-/*   Updated: 2022/09/13 17:04:46 by rvrignon         ###   ########.fr       */
+/*   Updated: 2022/09/15 14:41:02 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ char	*find_cmdpath(char *cmd, char **envp)
 
 	paths = find_path(envp);
 	if (!paths)
-		return (0);
+		return (NULL);
 	i = 0;
 	while (paths[i])
 	{
@@ -64,52 +64,50 @@ char	*find_cmdpath(char *cmd, char **envp)
 	}
 	i = -1;
 	free_double(paths);
-	return (0);
+	return (NULL);
 }
 
-void	err_return(char **cmd, int i, int *fd)
+char	*setpath(char *av, char **envp)
 {
-	char	*err;
+	char	**cmd;
 
-	if (!cmd)
-		ft_putstr_fd("Command '' not found\n", 2);
+	if (ft_strlen(av) == 0)
+		return (NULL);
 	else
 	{
-		err = ft_strjoin(cmd[0], ": Command not found\n");
-		ft_putstr_fd(err, 2);
-		free(err);
+		cmd = ft_split(av, ' ');
+		if (!cmd[0])
+			return (NULL);
+		if (!find_cmdpath(cmd[0], envp))
+		{
+			if (access(cmd[0], F_OK) == 0)
+				return (cmd[0]);
+			else
+				return (NULL);
+		}
+		else
+			return (find_cmdpath(cmd[0], envp));
 	}
-	if (cmd)
-	{
-		while (cmd[++i])
-			free(cmd[i]);
-		free(cmd);
-	}
-	close_pipes(fd);
 }
 
 void	execute(char *av, char **envp, int *fd)
 {
-	char	**cmd;
 	int		i;
 	char	*path;
+	char	**cmd;
 
-	i = -1;
-	cmd = NULL;
 	if (ft_strlen(av) == 0)
-		path = NULL;
+		cmd = NULL;
 	else
-	{
 		cmd = ft_split(av, ' ');
-		if (access(cmd[0], F_OK) == 0)
-			path = cmd[0];
-		else
-			path = find_cmdpath(cmd[0], envp);
-	}
+	if (!cmd[0])
+		cmd = NULL;
+	i = -1;
+	path = setpath(av, envp);
 	if (!path)
 	{
 		err_return(cmd, i, fd);
-		exit(EXIT_FAILURE);
+		return ;
 	}
 	if (execve(path, cmd, envp) == -1)
 		exit(EXIT_FAILURE);

@@ -6,7 +6,7 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/17 19:25:17 by rvrignon          #+#    #+#             */
-/*   Updated: 2022/09/19 19:45:54 by rvrignon         ###   ########.fr       */
+/*   Updated: 2022/09/19 19:53:22 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,12 +95,18 @@ char **test(char **tab)
 	while (tab[i] != NULL)
 		i++;
 	test = (char **)malloc(sizeof(char *) * i + 1);
+	if (!test)
+		return (NULL);
 	i = 0;
 	test[0] = (char *)malloc(sizeof(char) * ft_strlen("bash\0"));
+	if (!test[0])
+		return (NULL);
 	test[0] = "bash";
 	while (tab[i] != NULL)
 	{
 		test[i + 1] = (char *)malloc(sizeof(char) * ft_strlen(tab[i]));
+		if (!test[i + 1])
+			return (NULL);
 		test[i + 1] = tab[i];
 		i++;
 	}
@@ -127,7 +133,7 @@ void	execute(char *av, char **envp, int *fd)
 			path = setpath(av, envp);
 		else
 			path = cmd[0];
-		if (access(path, X_OK) != 0)
+		if (access(path, F_OK) != 0)
 			path = NULL;
 	}
 	if (!path)
@@ -136,7 +142,7 @@ void	execute(char *av, char **envp, int *fd)
 	{
 		if (execve("/usr/bin/bash", test(cmd), envp) == -1)
 		{
-			perror(cmd[1]);
+			perror(cmd[0]);
 			exit(EXIT_FAILURE);	
 		}
 	}

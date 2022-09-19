@@ -6,7 +6,7 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/17 19:25:17 by rvrignon          #+#    #+#             */
-/*   Updated: 2022/09/15 14:41:02 by rvrignon         ###   ########.fr       */
+/*   Updated: 2022/09/19 13:03:42 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,20 +71,15 @@ char	*setpath(char *av, char **envp)
 {
 	char	**cmd;
 
-	if (ft_strlen(av) == 0)
+	if (!av)
 		return (NULL);
 	else
 	{
 		cmd = ft_split(av, ' ');
 		if (!cmd[0])
 			return (NULL);
-		if (!find_cmdpath(cmd[0], envp))
-		{
-			if (access(cmd[0], F_OK) == 0)
-				return (cmd[0]);
-			else
-				return (NULL);
-		}
+		else if (!find_cmdpath(cmd[0], envp))
+			return (cmd[0]);
 		else
 			return (find_cmdpath(cmd[0], envp));
 	}
@@ -92,21 +87,25 @@ char	*setpath(char *av, char **envp)
 
 void	execute(char *av, char **envp, int *fd)
 {
-	int		i;
 	char	*path;
 	char	**cmd;
 
-	if (ft_strlen(av) == 0)
-		cmd = NULL;
-	else
+	cmd = NULL;
+	path = NULL;
+	if (!av)
+		path = NULL;
+	else if (ft_strlen(av) > 0)
+	{
 		cmd = ft_split(av, ' ');
-	if (!cmd[0])
-		cmd = NULL;
-	i = -1;
-	path = setpath(av, envp);
+		if (!cmd[0])
+			cmd = NULL;
+		path = setpath(av, envp);
+		if (access(path, X_OK) != 0)
+			path = NULL;
+	}
 	if (!path)
 	{
-		err_return(cmd, i, fd);
+		err_return(cmd, fd);
 		return ;
 	}
 	if (execve(path, cmd, envp) == -1)

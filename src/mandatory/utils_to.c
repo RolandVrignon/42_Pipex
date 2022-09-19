@@ -6,7 +6,7 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/13 16:30:42 by rvrignon          #+#    #+#             */
-/*   Updated: 2022/09/15 14:42:25 by rvrignon         ###   ########.fr       */
+/*   Updated: 2022/09/19 13:02:45 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,10 @@ void	close_pipes(int fd[2])
 		close(fd[1]);
 }
 
-void	err_return(char **cmd, int i, int *fd)
+void	err_return(char **cmd, int *fd)
 {
 	char	*err;
+	int		i;
 
 	if (!cmd)
 		ft_putstr_fd("Command '' not found\n", 2);
@@ -31,9 +32,7 @@ void	err_return(char **cmd, int i, int *fd)
 		err = ft_strjoin(cmd[0], ": Command not found\n");
 		ft_putstr_fd(err, 2);
 		free(err);
-	}
-	if (cmd)
-	{
+		i = -1;
 		while (cmd[++i])
 			free(cmd[i]);
 		free(cmd);

@@ -6,7 +6,7 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/07 14:25:22 by rvrignon          #+#    #+#             */
-/*   Updated: 2022/09/15 14:28:00 by rvrignon         ###   ########.fr       */
+/*   Updated: 2022/09/19 13:03:55 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ char	*find_cmdpath(char *cmd, char **envp);
 
 void	execute(char *av, char **envp, int *fd);
 
-void	err_return(char **cmd, int i, int *fd);
+void	err_return(char **cmd, int *fd);
 
 char	*setpath(char *av, char **envp);
 

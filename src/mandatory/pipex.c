@@ -6,7 +6,7 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/17 19:25:10 by rvrignon          #+#    #+#             */
-/*   Updated: 2022/09/13 16:31:29 by rvrignon         ###   ########.fr       */
+/*   Updated: 2022/09/19 16:16:12 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ void	first_child(char **av, char **envp, int *fd)
 		perror(av[1]);
 		close_pipes(fd);
 		exit(EXIT_FAILURE);
+		// return ;
 	}
 	dup2(filein, STDIN_FILENO);
 	dup2(fd[1], STDOUT_FILENO);

@@ -6,7 +6,7 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/17 19:25:17 by rvrignon          #+#    #+#             */
-/*   Updated: 2022/09/15 17:17:06 by rvrignon         ###   ########.fr       */
+/*   Updated: 2022/09/19 19:45:54 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,11 +72,48 @@ char	*setpath(char *av, char **envp)
 	}
 }
 
+int		is_path(char *av)
+{
+	int	i;
+
+	i = 0;
+	while (av[i] != '\0')
+	{
+		if (av[i] == '/')
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
+char **test(char **tab)
+{
+	char	**test;
+	int 	i;
+	
+	i = 0;
+	while (tab[i] != NULL)
+		i++;
+	test = (char **)malloc(sizeof(char *) * i + 1);
+	i = 0;
+	test[0] = (char *)malloc(sizeof(char) * ft_strlen("bash\0"));
+	test[0] = "bash";
+	while (tab[i] != NULL)
+	{
+		test[i + 1] = (char *)malloc(sizeof(char) * ft_strlen(tab[i]));
+		test[i + 1] = tab[i];
+		i++;
+	}
+	test[i + 1] = NULL;
+	return (test);
+}
+
 void	execute(char *av, char **envp, int *fd)
 {
 	char	*path;
 	char	**cmd;
 
+	(void)fd;
 	cmd = NULL;
 	path = NULL;
 	if (!av)
@@ -84,17 +121,23 @@ void	execute(char *av, char **envp, int *fd)
 	else if (ft_strlen(av) > 0)
 	{
 		cmd = ft_split(av, ' ');
-		if (!cmd[0])
+		if (!cmd)
 			cmd = NULL;
-		path = setpath(av, envp);
+		if (!is_path(av))
+			path = setpath(av, envp);
+		else
+			path = cmd[0];
 		if (access(path, X_OK) != 0)
 			path = NULL;
 	}
 	if (!path)
-	{
-		err_return(cmd, fd);
-		return ;
-	}
+		return (err_return(cmd, fd));
 	if (execve(path, cmd, envp) == -1)
-		exit(EXIT_FAILURE);
+	{
+		if (execve("/usr/bin/bash", test(cmd), envp) == -1)
+		{
+			perror(cmd[1]);
+			exit(EXIT_FAILURE);	
+		}
+	}
 }
